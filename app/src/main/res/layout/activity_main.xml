@@ -17,9 +17,9 @@
         android:id="@+id/buttonStartService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:background="@color/colorAccent"
-        android:padding="16dp"
+        android:padding="@dimen/_16sdp"
         android:text="Start Service"
         android:textColor="#fff" />
 
@@ -28,12 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:padding="16dp"
+        android:padding="@dimen/_16sdp"
         android:text="Stop Service"
         android:textColor="#fff" />
-
-
-
 </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -54,8 +51,8 @@
                 android:orientation="vertical"
                 android:background="@color/color_actionbar">
                 <ImageView
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
+                    android:layout_width="@dimen/_75sdp"
+                    android:layout_height="@dimen/_75sdp"
                     android:src="@drawable/ic_launcher_background"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -81,18 +78,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="5dp"
+                    android:layout_margin="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
                     android:id="@+id/button_home">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_launcher_background"
                             android:layout_gravity="center" />
 
@@ -100,7 +97,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
                             android:text="Add Family Members"
                             android:textColor="#000"
                             android:textSize="18sp" />
@@ -110,18 +107,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="5dp"
+                    android:layout_margin="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
                     android:id="@+id/button_setting">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_launcher_background"
                             android:layout_gravity="center" />
                         <TextView
@@ -130,25 +127,25 @@
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
                             android:text="Locate Members"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="5dp"
+                    android:layout_margin="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
                     android:id="@+id/button_privacy">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_launcher_background"
                             android:layout_gravity="center" />
                         <TextView
@@ -157,25 +154,25 @@
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
                             android:text="Control Location Sharing"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="5dp"
+                    android:layout_margin="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
                     android:id="@+id/button_help">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_launcher_background"
                             android:layout_gravity="center" />
                         <TextView
@@ -184,25 +181,25 @@
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
                             android:text="Help and Support"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="8dp"
-                    app:cardCornerRadius="5dp"
+                    android:layout_margin="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
                     android:id="@+id/button_about_us">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_launcher_background"
                             android:layout_gravity="center" />
                         <TextView
@@ -211,7 +208,7 @@
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
                             android:text="About Us"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
