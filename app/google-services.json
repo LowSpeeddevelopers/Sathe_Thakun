@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "330282585703",
+    "firebase_url": "https://sathe-thakun.firebaseio.com",
+    "project_id": "sathe-thakun",
+    "storage_bucket": "sathe-thakun.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330282585703:android:3b356d6fa3423116f4cec2",
+        "android_client_info": {
+          "package_name": "com.nexttech.sathethakun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330282585703-25tgj8n97ptsjtqv31cj0pg2ge0s36je.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nexttech.sathethakun",
+            "certificate_hash": "ac67399d0266ee6b33681a37ff488b5b4878f0ed"
+          }
+        },
+        {
+          "client_id": "330282585703-ghjub72f339jfrva02s5q435r0sfok89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-SPV4IZePOC_in8E1Qqy0vJ3_nzvTHbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330282585703-ghjub72f339jfrva02s5q435r0sfok89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
