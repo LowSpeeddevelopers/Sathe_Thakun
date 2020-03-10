@@ -39,11 +39,11 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="#000"
+            android:gravity="center"
+            android:background="@color/mapbox_blue"
             app:itemIconTint="@android:color/white"
             app:itemTextColor="@android:color/white"
-            app:menu="@menu/navigation" />
+            app:menu="@menu/navigation"/>
 
 </LinearLayout>
 
@@ -104,7 +104,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/about"
                             android:layout_gravity="center" />
 
                         <TextView
@@ -133,7 +133,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/notification"
                             android:layout_gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -160,7 +160,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/settings"
                             android:layout_gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/privacypolicy"
                             android:layout_gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -214,7 +214,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/help"
                             android:layout_gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -241,7 +241,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/logout"
                             android:layout_gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
