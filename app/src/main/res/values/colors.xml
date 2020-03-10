@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="color_actionbar">#4863A0</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="sign_up_sign_in_btn_color">#5a288b</color>
+    <color name="text_color">#734b9b</color>
+    <color name="edit_text_border_color">#cfc1dc</color>
+
 </resources>

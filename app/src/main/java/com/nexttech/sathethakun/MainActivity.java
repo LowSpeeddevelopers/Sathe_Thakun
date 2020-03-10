@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
 
+        startActivity(new Intent(this,RegisterActivity.class));
+
 
 
         btnStartService = findViewById(R.id.buttonStartService);

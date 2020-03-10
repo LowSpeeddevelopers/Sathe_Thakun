@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="#FFFFFF"
+    tools:targetApi="lollipop">
+
+
+    <item
+        android:id="@+id/ripple_id"
+        android:gravity="center">
+        <shape android:shape="rectangle">
+
+        </shape>
+
+
+    </item>
+    <item>
+
+        <shape android:visible="true">
+            <solid android:color="@color/sign_up_sign_in_btn_color"/>
+            <stroke
+                android:width="3dp"
+
+                android:color="#fff" />
+            <corners
+                android:radius="@dimen/_20sdp"/>
+        </shape>
+    </item>
+
+</ripple>
