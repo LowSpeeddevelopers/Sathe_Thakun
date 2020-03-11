@@ -8,4 +8,6 @@
     <color name="text_color">#734b9b</color>
     <color name="edit_text_border_color">#cfc1dc</color>
 
+    <color name="colorButton">#fff</color>
+
 </resources>
