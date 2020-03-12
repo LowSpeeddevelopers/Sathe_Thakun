@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Sathe Thakun</string>
     <string name="mapbox_access_token">sk.eyJ1IjoibG93c3BlZWRkZXZlbG9wZXJzIiwiYSI6ImNrN2EyNGFscDAxZDEzZnA3cmJ3NjF2b3IifQ.xxwuZBiyMkmc3g6jsikAaA</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="directions_activity_toast_message">aknkdf</string>
 </resources>

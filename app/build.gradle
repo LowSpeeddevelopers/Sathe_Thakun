@@ -15,6 +15,19 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+    android {
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
+        }
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://mapbox.bintray.com/mapbox' }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -36,14 +49,15 @@ dependencies {
     //swipe library
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.0.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:5.0.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.4'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
     testImplementation 'junit:junit:4.12'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

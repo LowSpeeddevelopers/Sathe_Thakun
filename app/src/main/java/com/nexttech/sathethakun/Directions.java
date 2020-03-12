@@ -3,27 +3,43 @@ package com.nexttech.sathethakun;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Point;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class Directions extends AppCompatActivity {
 
@@ -43,7 +59,7 @@ public class Directions extends AppCompatActivity {
 
 // Mapbox access token is configured here. This needs to be called either in your application
 // object or in the same activity which contains the mapview.
-        Mapbox.getInstance(this, getString(getString(R.id.mapbox_access_token)));
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
 
 // This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_directions);
@@ -104,8 +120,8 @@ public class Directions extends AppCompatActivity {
         loadedMapStyle.addLayer(routeLayer);
 
 // Add the red marker icon image to the map
-        loadedMapStyle.addImage(RED_PIN_ICON_ID, BitmapUtils.getBitmapFromDrawable(
-                getResources().getDrawable(R.drawable.red_marker)));
+//        loadedMapStyle.addImage(RED_PIN_ICON_ID, BitmapUtils.getBitmapFromDrawable(
+//                getResources().getDrawable(R.drawable.red_marker)));
 
 // Add the red marker icon SymbolLayer to the map
         loadedMapStyle.addLayer(new SymbolLayer(ICON_LAYER_ID, ICON_SOURCE_ID).withProperties(
@@ -128,7 +144,7 @@ public class Directions extends AppCompatActivity {
                 .destination(destination)
                 .overview(DirectionsCriteria.OVERVIEW_FULL)
                 .profile(DirectionsCriteria.PROFILE_DRIVING)
-                .accessToken(getString(R.string.access_token))
+                .accessToken(getString(R.string.mapbox_access_token))
                 .build();
 
         client.enqueueCall(new Callback<DirectionsResponse>() {
@@ -148,9 +164,7 @@ public class Directions extends AppCompatActivity {
                 currentRoute = response.body().routes().get(0);
 
 // Make a toast which displays the route's distance
-                Toast.makeText(DirectionsActivity.this, String.format(
-                        getString(R.string.directions_activity_toast_message),
-                        currentRoute.distance()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Directions.this, ""+currentRoute.distance(), Toast.LENGTH_SHORT).show();
 
                 if (mapboxMap != null) {
                     mapboxMap.getStyle(new Style.OnStyleLoaded() {
@@ -175,7 +189,7 @@ public class Directions extends AppCompatActivity {
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
                 Timber.e("Error: " + throwable.getMessage());
-                Toast.makeText(DirectionsActivity.this, "Error: " + throwable.getMessage(),
+                Toast.makeText(Directions.this, "Error: " + throwable.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
