@@ -22,6 +22,7 @@
         >
 
         <ScrollView
+            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
@@ -110,6 +111,75 @@
                         android:padding="8dp"
                         android:hint=""
                         android:inputType="textEmailAddress"
+                        android:background="@drawable/edit_text_border"
+                        android:textColor="#000"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/text_color"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="Phone"
+                        android:textSize="18dp"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"/>
+
+                    <EditText
+                        android:id="@+id/edt_signup_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:hint=""
+                        android:inputType="phone"
+                        android:background="@drawable/edit_text_border"
+                        android:textColor="#000"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/text_color"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="Age"
+                        android:textSize="18dp"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"/>
+
+                    <EditText
+                        android:id="@+id/edt_signup_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:hint=""
+                        android:inputType="number"
+                        android:background="@drawable/edit_text_border"
+                        android:textColor="#000"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/text_color"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="Address"
+                        android:textSize="18dp"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"/>
+
+                    <EditText
+                        android:id="@+id/edt_signup_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:hint=""
+                        android:inputType="text"
                         android:background="@drawable/edit_text_border"
                         android:textColor="#000"
                         android:textSize="25sp"/>

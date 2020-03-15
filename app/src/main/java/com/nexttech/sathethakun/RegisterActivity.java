@@ -16,15 +16,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.Model.UserModel;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText edtSignupName, edtSignupEmail, edtSignupPassword, edtSignupRetypePassword;
+    EditText edtSignupName, edtSignupEmail, edtSignupPhone, edtSignupAge, edtSignupAddress, edtSignupPassword, edtSignupRetypePassword;
     Button btnSignup;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
 
-    String name, email, password, retypePassword;
+    String name, email, phone, age, address, password, retypePassword;
 
     @Override
     protected void onStart() {
@@ -39,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (user != null) {
 
             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            finish();
         }
     }
 
@@ -48,11 +53,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         edtSignupName = findViewById(R.id.edt_signup_name);
         edtSignupEmail = findViewById(R.id.edt_signup_email);
         edtSignupPassword = findViewById(R.id.edt_signup_password);
         edtSignupRetypePassword = findViewById(R.id.edt_signup_retype_password);
+        edtSignupPhone = findViewById(R.id.edt_signup_phone);
+        edtSignupAge = findViewById(R.id.edt_signup_age);
+        edtSignupAddress = findViewById(R.id.edt_signup_address);
 
         btnSignup = findViewById(R.id.btn_signup);
 
@@ -61,10 +70,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 name = edtSignupName.getText().toString();
                 email = edtSignupEmail.getText().toString();
+                phone = edtSignupPhone.getText().toString();
+                age = edtSignupAge.getText().toString();
+                address = edtSignupAddress.getText().toString();
                 password = edtSignupPassword.getText().toString();
                 retypePassword = edtSignupRetypePassword.getText().toString();
 
-                if (name.isEmpty() || email.isEmpty() || password.isEmpty() || retypePassword.isEmpty()){
+                if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || age.isEmpty() || address.isEmpty() || password.isEmpty() || retypePassword.isEmpty()){
                     Toast.makeText(RegisterActivity.this, "Input Data", Toast.LENGTH_SHORT).show();
                 } else if (!password.equals(retypePassword)){
                     Toast.makeText(RegisterActivity.this, "Password & Retype Password not same.", Toast.LENGTH_SHORT).show();
@@ -83,6 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            insertIntoDatabase(user.getUid());
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
@@ -93,5 +107,14 @@ public class RegisterActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private void insertIntoDatabase(String uid) {
+
+        DatabaseReference myRef = database.getReference("Users").child(uid);
+
+        UserModel userModel = new UserModel(name, email, phone, age, address);
+
+        myRef.setValue(userModel);
     }
 }

@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
 
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
         }
     }
 

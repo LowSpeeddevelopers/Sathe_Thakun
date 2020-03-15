@@ -13,24 +13,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <Button
-        android:id="@+id/buttonStartService"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@color/colorAccent"
-        android:padding="@dimen/_16sdp"
-        android:text="Start Service"
-        android:textColor="#fff" />
+        <Button
+            android:id="@+id/buttonStartService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@color/colorAccent"
+            android:padding="@dimen/_16sdp"
+            android:text="Start Service"
+            android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/buttonStopService"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:padding="@dimen/_16sdp"
-        android:text="Stop Service"
-        android:textColor="#fff" />
+        <Button
+            android:id="@+id/buttonStopService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:padding="@dimen/_16sdp"
+            android:text="Stop Service"
+            android:textColor="#fff" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -45,7 +45,7 @@
             app:itemTextColor="@android:color/white"
             app:menu="@menu/navigation"/>
 
-</LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -69,18 +69,18 @@
                     android:layout_height="@dimen/_75sdp"
                     android:src="@drawable/ic_launcher_background"/>
                 <TextView
+                    android:id="@+id/tv_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lee Ji-eun"
                     android:textColor="#fff"
                     android:gravity="center"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
                 <TextView
+                    android:id="@+id/tv_user_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#fff"
-                    android:text="01913628410"
                     android:textSize="16sp"
                     android:gravity="center"/>
             </LinearLayout>
