@@ -7,12 +7,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".LoginActivity">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +18,7 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         android:text="Welcome Back"
-        android:textSize="@dimen/_25sdp"
+        android:textSize="@dimen/_22sdp"
         />
 
     <androidx.cardview.widget.CardView
@@ -46,14 +43,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                </LinearLayout>
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -62,7 +55,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text="Sign In"
-                    android:textSize="30dp"
+                    android:textSize="@dimen/_18sdp"
                     />
                 <View
                     android:layout_width="match_parent"
@@ -77,18 +70,16 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text="Sign Up"
-                    android:textSize="30dp"
+                    android:textSize="@dimen/_18sdp"
                     />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_weight="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -96,11 +87,13 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text="Username"
-                    android:textSize="18dp"
-                    android:paddingStart="20dp"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:paddingBottom="10dp"/>
 
                 <EditText
+                    android:id="@+id/edt_login_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
@@ -108,7 +101,9 @@
                     android:background="@drawable/edit_text_border"
                     android:textColor="#000"
                     android:inputType="textEmailAddress"
-                    android:textSize="25sp"/>
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:textSize="@dimen/_16sdp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,43 +112,39 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text="Password"
-                    android:textSize="18dp"
-                    android:paddingStart="20dp"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:paddingBottom="10dp"
                     android:paddingTop="20dp"/>
 
                 <EditText
+                    android:id="@+id/edt_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:hint=".........."
+                    android:hint="********"
                     android:inputType="textPassword"
                     android:background="@drawable/edit_text_border"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_15sdp"
                     android:textColor="#000"
-                    android:textSize="25sp"/>
+                    android:textSize="@dimen/_16sdp"/>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_weight="1"/>
-
             <Button
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:textColor="#FFFFFF"
-                android:paddingStart="40dp"
-                android:paddingEnd="40dp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
                 android:text="Sign In"
                 android:layout_gravity="center"
-                android:textSize="25dp"
-                android:background="@drawable/ripple_button"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_weight="1"/>
+                android:textSize="@dimen/_16sdp"
+                android:background="@drawable/button_round_shape"
+                />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -169,22 +160,19 @@
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:gravity="center"
+            android:textSize="@dimen/_12sdp"
             android:text="Don't have an Account ? "/>
 
         <TextView
-            android:id="@+id/resend_code"
+            android:id="@+id/tv_signup"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@color/text_color"
             android:gravity="center"
             android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
             android:text="sign up"/>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
 </LinearLayout>

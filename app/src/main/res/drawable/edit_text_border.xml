@@ -6,5 +6,5 @@
 
         android:color="@color/edit_text_border_color" />
     <corners
-        android:radius="15dp"/>
+        android:radius="@dimen/_20sdp"/>
 </shape>
