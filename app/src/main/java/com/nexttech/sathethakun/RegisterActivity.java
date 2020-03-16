@@ -2,10 +2,12 @@ package com.nexttech.sathethakun;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nexttech.sathethakun.Model.UserModel;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends Fragment {
+    Context context;
+    public RegisterActivity(Context context){
+        this.context = context;
+    }
 
     EditText edtSignupName, edtSignupEmail, edtSignupPhone, edtSignupAge, edtSignupAddress, edtSignupPassword, edtSignupRetypePassword;
     Button btnSignup;
@@ -30,10 +36,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     String name, email, phone, age, address, password, retypePassword;
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
@@ -42,15 +49,15 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
 
-            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-            finish();
+            startActivity(new Intent(context, MainActivity.class));
+            ((Activity)context).finish();
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.fragment_register);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -77,9 +84,9 @@ public class RegisterActivity extends AppCompatActivity {
                 retypePassword = edtSignupRetypePassword.getText().toString();
 
                 if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || age.isEmpty() || address.isEmpty() || password.isEmpty() || retypePassword.isEmpty()){
-                    Toast.makeText(RegisterActivity.this, "Input Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Input Data", Toast.LENGTH_SHORT).show();
                 } else if (!password.equals(retypePassword)){
-                    Toast.makeText(RegisterActivity.this, "Password & Retype Password not same.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Password & Retype Password not same.", Toast.LENGTH_SHORT).show();
                 } else {
                     createUser();
                 }
@@ -89,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createUser() {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(((Activity)context), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -99,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                             insertIntoDatabase(user.getUid());
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.makeText(context, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -117,4 +124,5 @@ public class RegisterActivity extends AppCompatActivity {
 
         myRef.setValue(userModel);
     }
+
 }

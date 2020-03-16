@@ -48,17 +48,29 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/text_color"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:text="Sign In"
-                    android:textSize="@dimen/_18sdp"
-                    />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/text_color"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="Sign In"
+                        android:textSize="@dimen/_18sdp"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2sdp"
+                        android:background="@color/colorPrimary"/>
+                </LinearLayout>
+
+
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"/>
 
