@@ -1,7 +1,9 @@
 package com.nexttech.sathethakun;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
+import android.graphics.ImageDecoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,10 +37,42 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser fUser;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser,this);
+    }
+
+    public static void updateUI(FirebaseUser currentUser, Context context) {
+
+        if (currentUser != null ) {
+
+            if(context instanceof MainActivity){
+                ((MainActivity)context).RetriveUserData();
+            }else {
+                Log.e("activity","main");
+                Intent i =new Intent(context,MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+               // ((Activity)context).finish();
+            }
+        }else {
+            Log.e("user","null");
+            Intent i = new Intent(context,LoginandRegisterholder.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+            ((Activity)context).finish();
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
+
 
         //startActivity(new Intent(this,RegisterActivity.class));
         mAuth = FirebaseAuth.getInstance();
@@ -55,11 +89,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAuth.signOut();
 
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
+
             }
         });
 
-        RetriveUserData();
+
+
+
 
         btnStartService = findViewById(R.id.buttonStartService);
         btnStopService = findViewById(R.id.buttonStopService);
@@ -85,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
+
                 userNmae.setText(userModel.getName());
                 userPhone.setText(userModel.getPhone());
             }

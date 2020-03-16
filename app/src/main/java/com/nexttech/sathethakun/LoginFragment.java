@@ -1,12 +1,16 @@
 package com.nexttech.sathethakun;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends Fragment {
-
+public class LoginFragment extends Fragment {
+    Context context;
     EditText edtLoginEmail, edtLoginPassword;
     Button btnLogin;
     TextView tvSignup;
@@ -28,34 +32,25 @@ public class LoginActivity extends Fragment {
 
     String email, password;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+    public LoginFragment(Context context){
+        this.context = context;
     }
 
-    private void updateUI(FirebaseUser currentUser) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
 
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
-    }
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mAuth = FirebaseAuth.getInstance();
+        View vi = inflater.inflate(R.layout.fragment_login,container,false);
 
-        edtLoginEmail = findViewById(R.id.edt_login_email);
-        edtLoginPassword = findViewById(R.id.edt_login_password);
-        btnLogin = findViewById(R.id.btn_login);
-        tvSignup = findViewById(R.id.tv_signup);
+
+
+
+        edtLoginEmail = vi.findViewById(R.id.edt_login_email);
+        edtLoginPassword = vi.findViewById(R.id.edt_login_password);
+        btnLogin = vi.findViewById(R.id.btn_login);
+        tvSignup = vi.findViewById(R.id.tv_signup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +59,7 @@ public class LoginActivity extends Fragment {
                 password = edtLoginPassword.getText().toString();
 
                 if (email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Input Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Input Data", Toast.LENGTH_SHORT).show();
                 } else {
                     loginUser();
                 }
@@ -74,29 +69,27 @@ public class LoginActivity extends Fragment {
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new RegisterFragment(context),context);
             }
         });
+
+
+        return vi;
     }
 
-    private void loginUser() {
 
+    private void loginUser() {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(((Activity)context), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            MainActivity.updateUI(user,context);
                         } else {
-
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            Toast.makeText(context, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            MainActivity.updateUI(null,context);
                         }
-
-                        // ...
                     }
                 });
     }

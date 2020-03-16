@@ -1,6 +1,7 @@
 package com.nexttech.sathethakun;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -8,7 +9,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,9 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nexttech.sathethakun.Model.UserModel;
 
-public class RegisterActivity extends Fragment {
+public class RegisterFragment extends Fragment {
     Context context;
-    public RegisterActivity(Context context){
+    public RegisterFragment(Context context){
         this.context = context;
     }
 
@@ -36,41 +40,28 @@ public class RegisterActivity extends Fragment {
 
     String name, email, phone, age, address, password, retypePassword;
 
-
-
+    @Nullable
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void updateUI(FirebaseUser currentUser) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-
-            startActivity(new Intent(context, MainActivity.class));
-            ((Activity)context).finish();
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_register);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        View vi;
 
-        edtSignupName = findViewById(R.id.edt_signup_name);
-        edtSignupEmail = findViewById(R.id.edt_signup_email);
-        edtSignupPassword = findViewById(R.id.edt_signup_password);
-        edtSignupRetypePassword = findViewById(R.id.edt_signup_retype_password);
-        edtSignupPhone = findViewById(R.id.edt_signup_phone);
-        edtSignupAge = findViewById(R.id.edt_signup_age);
-        edtSignupAddress = findViewById(R.id.edt_signup_address);
 
-        btnSignup = findViewById(R.id.btn_signup);
+        vi = inflater.inflate(R.layout.fragment_register,container,false);
+
+
+
+
+        edtSignupName = vi.findViewById(R.id.edt_signup_name);
+        edtSignupEmail = vi.findViewById(R.id.edt_signup_email);
+        edtSignupPassword = vi.findViewById(R.id.edt_signup_password);
+        edtSignupRetypePassword = vi.findViewById(R.id.edt_signup_retype_password);
+        edtSignupPhone = vi.findViewById(R.id.edt_signup_phone);
+        edtSignupAge = vi.findViewById(R.id.edt_signup_age);
+        edtSignupAddress = vi.findViewById(R.id.edt_signup_address);
+
+        btnSignup = vi.findViewById(R.id.btn_signup);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +83,10 @@ public class RegisterActivity extends Fragment {
                 }
             }
         });
+
+
+        return vi;
+
     }
 
     private void createUser() {
@@ -101,14 +96,16 @@ public class RegisterActivity extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-
                             insertIntoDatabase(user.getUid());
+                            MainActivity.updateUI(user,context);
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(context, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            Log.e("reasone",task.getException().toString());
+                            MainActivity.updateUI(null,context);
                         }
 
                         // ...
@@ -122,7 +119,16 @@ public class RegisterActivity extends Fragment {
 
         UserModel userModel = new UserModel(name, email, phone, age, address);
 
-        myRef.setValue(userModel);
+        myRef.setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(context,"successful",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context,"unsuccessful",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

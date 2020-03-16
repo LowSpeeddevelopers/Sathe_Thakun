@@ -17,7 +17,7 @@
         <activity android:name=".ShowUserLocation" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".NotificationActitivity" />
-
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MainActivity"></activity>
+
 
         <receiver
             android:name=".BroadcastReceiverOnBootComplete"
