@@ -1,4 +1,4 @@
-package com.nexttech.sathethakun;
+package com.nexttech.sathethakun.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.nexttech.sathethakun.LoginandRegisterholder;
+import com.nexttech.sathethakun.MainActivity;
+import com.nexttech.sathethakun.R;
 
 public class LoginFragment extends Fragment {
     Context context;

@@ -1,18 +1,15 @@
 package com.nexttech.sathethakun;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.nexttech.sathethakun.Fragments.LoginFragment;
 
 public class LoginandRegisterholder extends AppCompatActivity {
     Fragment LoginFragment;

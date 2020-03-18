@@ -3,9 +3,9 @@ package com.nexttech.sathethakun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ImageDecoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.nexttech.sathethakun.Fragments.AddUsersFragment;
+import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
+import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.UserModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,17 +38,19 @@ public class MainActivity extends AppCompatActivity {
 
     TextView userNmae, userPhone;
 
+    BottomNavigationView bottomNavigation;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser fUser;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser,this);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        updateUI(currentUser,this);
+//    }
 
     public static void updateUI(FirebaseUser currentUser, Context context) {
 
@@ -79,10 +87,16 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         fUser = mAuth.getCurrentUser();
 
+        updateUI(fUser,this);
+
         userNmae = findViewById(R.id.tv_user_name);
         userPhone = findViewById(R.id.tv_user_phone);
 
         btnLogout = findViewById(R.id.button_logout);
+
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationItemSelectedListener);
+        openFragment(new ConnectedUsersFragment());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
         btnStartService = findViewById(R.id.buttonStartService);
@@ -145,6 +156,30 @@ public class MainActivity extends AppCompatActivity {
         stopService(serviceIntent);
 
     }
+
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
+
+    BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_connected:
+                            openFragment(new ConnectedUsersFragment());
+                            return true;
+                        case R.id.navigation_add:
+                            openFragment(new AddUsersFragment());
+                            return true;
+                        case R.id.navigation_request:
+                            openFragment(new RequestUsersFragment());
+                            return true;
+                    }
+                    return false;
+                }
+            };
 
 
 }
