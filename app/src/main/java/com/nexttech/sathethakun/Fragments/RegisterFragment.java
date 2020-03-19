@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.LoginandRegisterholder;
 import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
@@ -97,7 +98,7 @@ public class RegisterFragment extends Fragment {
         tv_Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new LoginFragment(context),context);
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new LoginFragment(context),"login");
             }
         });
 
