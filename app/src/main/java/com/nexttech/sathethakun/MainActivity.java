@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser fUser;
+    TextView navigation_connected,navigation_add,navigation_request;
 
     @Override
     protected void onStart() {
@@ -81,22 +82,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
-
-
-        //startActivity(new Intent(this,RegisterActivity.class));
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        fUser = mAuth.getCurrentUser();
-
-        updateUI(fUser,this);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         userNmae = findViewById(R.id.tv_user_name);
         userPhone = findViewById(R.id.tv_user_phone);
-
         btnLogout = findViewById(R.id.button_logout);
+        //startActivity(new Intent(this,RegisterActivity.class));
+        navigation_connected = bottomNavigation.findViewById(R.id.connected);
+        navigation_add = bottomNavigation.findViewById(R.id.add);
+        navigation_request = bottomNavigation.findViewById(R.id.request);
 
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationItemSelectedListener);
+
+        navigation_connected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(new ConnectedUsersFragment());
+            }
+        });
+
+        navigation_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(new AddUsersFragment());
+            }
+        });
+        navigation_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(new RequestUsersFragment());
+            }
+        });
+
+
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        fUser = mAuth.getCurrentUser();
+        updateUI(fUser,this);
+
+
+
         openFragment(new ConnectedUsersFragment());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -163,24 +188,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
-
-    BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.navigation_connected:
-                            openFragment(new ConnectedUsersFragment());
-                            return true;
-                        case R.id.navigation_add:
-                            openFragment(new AddUsersFragment());
-                            return true;
-                        case R.id.navigation_request:
-                            openFragment(new RequestUsersFragment());
-                            return true;
-                    }
-                    return false;
-                }
-            };
 
 
 }

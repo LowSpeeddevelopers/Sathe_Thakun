@@ -22,12 +22,54 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center"
             android:background="@color/mapbox_blue"
             app:itemIconTint="@android:color/white"
-            app:itemTextColor="@android:color/white"
-            app:menu="@menu/navigation"/>
+            app:itemTextColor="@android:color/white">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Connected"
+                    android:padding="@dimen/_4sdp"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#fff"
+                    android:drawableTop="@drawable/connected"
+                    android:gravity="center"
+                    android:id="@+id/connected"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Add People"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#fff"
+                    android:padding="@dimen/_4sdp"
+                    android:drawableTop="@drawable/addpeople"
+                    android:gravity="center"
+                    android:id="@+id/add"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="@dimen/_4sdp"
+                    android:text="Requests"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#fff"
+                    android:drawableTop="@drawable/requests"
+                    android:gravity="center"
+                    android:id="@+id/request"/>
+
+            </LinearLayout>
+            
+            
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
         <Button
