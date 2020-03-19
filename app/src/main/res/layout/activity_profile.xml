@@ -131,21 +131,28 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorButton"
                     android:text="Delete"
-                    android:textColor="#ED0A0A"/>
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:textColor="#ED0A0A"
                     android:layout_weight="1"/>
+
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorButton"
+                    android:text="Remove"
+                    android:textColor="#ED0A0A"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorButton"
                     android:textColor="#06EC10"
-                    android:text="Accept"/>
+                    android:text="Accept"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

@@ -98,7 +98,7 @@ public class RegisterFragment extends Fragment {
         tv_Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new LoginFragment(context),"login");
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new LoginFragment(context),"signup");
             }
         });
 
