@@ -52,7 +52,6 @@ public class RegisterFragment extends Fragment {
 
 
 
-
         edtSignupName = vi.findViewById(R.id.edt_signup_name);
         edtSignupEmail = vi.findViewById(R.id.edt_signup_email);
         edtSignupPassword = vi.findViewById(R.id.edt_signup_password);
