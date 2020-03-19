@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,6 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.JsonObject;
+import com.nexttech.sathethakun.Model.FDM;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 
 public class ForegroundService extends Service implements GetLocation {
@@ -30,10 +36,12 @@ public class ForegroundService extends Service implements GetLocation {
     @Override
     public void onCreate() {
         super.onCreate();
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        database = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance().getReference().child("Location").child(user.getUid());
 
     }
+
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -88,7 +96,11 @@ public class ForegroundService extends Service implements GetLocation {
     @Override
     public void onLocationChanged(Location location) {
         Log.e("location","changed");
-        //database.child("current location").setValue(location.getLongitude()+","+location.getLongitude());
+        Date date = new Date(location.getTime());
+        DateFormat dateFormat =  DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
+        String time = dateFormat.format(date);
+        FDM fdm = new FDM(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()),time);
+        database.setValue(fdm);
     }
 
     @Override

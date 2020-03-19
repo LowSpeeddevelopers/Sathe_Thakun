@@ -1,6 +1,7 @@
 package com.nexttech.sathethakun.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nexttech.sathethakun.Model.UserModel;
+import com.nexttech.sathethakun.ProfileActivity;
 import com.nexttech.sathethakun.R;
 
 import java.util.List;
@@ -54,6 +56,13 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
         holder.itemUserName.setText(model.getName());
         holder.itemUserMobileNumber.setText(model.getPhone());
 
+        holder.itemProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, ProfileActivity.class));
+            }
+        });
+
     }
 
     @Override
@@ -61,18 +70,22 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
         return requestUsers.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView itemProfilePic;
         TextView itemUserName, itemUserMobileNumber, itemMsg;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             itemProfilePic = itemView.findViewById(R.id.item_profile_pic);
             itemUserName = itemView.findViewById(R.id.item_user_name);
             itemUserMobileNumber = itemView.findViewById(R.id.item_user_mobile_number);
             itemMsg = itemView.findViewById(R.id.item_msg);
+
+
+
+
         }
     }
 }

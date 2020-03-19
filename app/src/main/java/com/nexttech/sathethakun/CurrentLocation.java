@@ -1,6 +1,7 @@
 package com.nexttech.sathethakun;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,7 +64,7 @@ public class CurrentLocation implements LocationListener {
             // Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No Provider Found or Permission Not Granted!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -118,5 +119,6 @@ public class CurrentLocation implements LocationListener {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
 
 }

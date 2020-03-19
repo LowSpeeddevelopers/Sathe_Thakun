@@ -78,7 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@color/colorAccent"
-            android:visibility="gone"
             android:padding="@dimen/_16sdp"
             android:text="Start Service"
             android:textColor="#fff" />
@@ -88,7 +87,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:visibility="gone"
             android:padding="@dimen/_16sdp"
             android:text="Stop Service"
             android:textColor="#fff" />
