@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment {
         signup_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new RegisterFragment(context),context);
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new RegisterFragment(context),"register");
             }
         });
 
