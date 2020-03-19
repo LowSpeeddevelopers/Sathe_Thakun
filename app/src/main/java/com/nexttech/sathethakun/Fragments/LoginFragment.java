@@ -28,7 +28,7 @@ public class LoginFragment extends Fragment {
     Context context;
     EditText edtLoginEmail, edtLoginPassword;
     Button btnLogin;
-    TextView tvSignup;
+    TextView tvSignup,signup_up;
 
     private FirebaseAuth mAuth;
 
@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
 
 
 
-
+        signup_up=vi.findViewById(R.id.sign_up_tv_up);
         edtLoginEmail = vi.findViewById(R.id.edt_login_email);
         edtLoginPassword = vi.findViewById(R.id.edt_login_password);
         btnLogin = vi.findViewById(R.id.btn_login);
@@ -72,6 +72,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new RegisterFragment(context),"register");
+            }
+        });
+
+        signup_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new RegisterFragment(context),context);
             }
         });
 
