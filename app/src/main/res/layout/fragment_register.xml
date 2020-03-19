@@ -11,14 +11,14 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_32sdp"
         app:cardBackgroundColor="#FFF"
         card_view:cardCornerRadius="@dimen/_20sdp"
-        card_view:cardElevation="5dp"
-        card_view:contentPadding="25dp">
+        card_view:cardElevation="@dimen/_5sdp"
+        card_view:contentPadding="@dimen/_25sdp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -46,12 +46,12 @@
                         android:gravity="center"
                         android:text="Sign In"
                         android:textColor="@color/text_color"
-                        android:textSize="30dp"
+                        android:textSize="@dimen/_20sdp"
                         android:textStyle="bold" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="@dimen/_48sdp"
                         android:layout_weight="1" />
 
                     <LinearLayout
@@ -66,7 +66,7 @@
                             android:gravity="center"
                             android:text="Sign Up"
                             android:textColor="@color/text_color"
-                            android:textSize="30dp"
+                            android:textSize="@dimen/_20sdp"
                             android:textStyle="bold" />
 
                         <View
@@ -87,8 +87,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Name"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_13sdp"
@@ -99,22 +99,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  Enter Full Name"
+                        android:hint="Enter Full Name"
                         android:inputType="text"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Email"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -122,22 +125,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  Enter Email Address"
+                        android:hint="Enter Email Address"
                         android:inputType="textEmailAddress"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Password"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -145,22 +151,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  Enter Password"
+                        android:hint="Enter Password"
                         android:inputType="textPassword"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Re-Type Password"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -168,22 +177,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  Re-type Password"
+                        android:hint="Re-type Password"
                         android:inputType="textPassword"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Phone"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -191,22 +203,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  +880"
+                        android:hint="+880"
                         android:inputType="phone"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Age"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -214,22 +229,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint=" Enter Age"
+                        android:hint="Enter Age"
                         android:inputType="number"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingStart="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_20sdp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="Address"
                         android:textColor="@color/text_color"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -237,11 +255,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border"
-                        android:hint="  Enter Address"
+                        android:hint="Enter Address"
                         android:inputType="textMultiLine"
-                        android:padding="8dp"
+                        android:padding="@dimen/_8sdp"
                         android:textColor="#000"
-                        android:textSize="@dimen/_16sdp" />
+                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_14sdp" />
 
 
                 </LinearLayout>

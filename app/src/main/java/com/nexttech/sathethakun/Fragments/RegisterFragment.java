@@ -1,4 +1,4 @@
-package com.nexttech.sathethakun;
+package com.nexttech.sathethakun.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
+import com.nexttech.sathethakun.R;
 
 public class RegisterFragment extends Fragment {
     Context context;
@@ -75,6 +77,12 @@ public class RegisterFragment extends Fragment {
 
                 if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || age.isEmpty() || address.isEmpty() || password.isEmpty() || retypePassword.isEmpty()){
                     Toast.makeText(context, "Input Data", Toast.LENGTH_SHORT).show();
+                } else if (phone.length() != 11){
+                    edtSignupPhone.setError("Mobile number must have 11 digits");
+                    edtSignupPhone.requestFocus();
+                } else if (!(phone.startsWith("017") || phone.startsWith("013") || phone.startsWith("014") || phone.startsWith("016") || phone.startsWith("018") || phone.startsWith("019") || phone.startsWith("015"))) {
+                    edtSignupPhone.setError("Invalid mobile number");
+                    edtSignupPhone.requestFocus();
                 } else if (!password.equals(retypePassword)){
                     Toast.makeText(context, "Password & Retype Password not same.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -122,6 +130,9 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+                    DatabaseReference myRef2 = database.getReference("Search User").child(phone);
+                    myRef2.setValue(uid);
+
                     Toast.makeText(context,"successful",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(context,"unsuccessful",Toast.LENGTH_SHORT).show();

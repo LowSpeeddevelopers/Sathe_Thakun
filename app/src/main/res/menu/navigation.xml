@@ -6,11 +6,11 @@
         android:title="Connected" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_add"
         android:title="Add" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_request"
         android:title="Request" />
 
 </menu>
