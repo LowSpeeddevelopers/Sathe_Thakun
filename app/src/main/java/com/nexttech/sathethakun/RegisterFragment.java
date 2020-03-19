@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,7 @@ public class RegisterFragment extends Fragment {
 
     EditText edtSignupName, edtSignupEmail, edtSignupPhone, edtSignupAge, edtSignupAddress, edtSignupPassword, edtSignupRetypePassword;
     Button btnSignup;
+    TextView tv_Signin;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -52,7 +54,7 @@ public class RegisterFragment extends Fragment {
 
 
 
-
+        tv_Signin=vi.findViewById(R.id.tv_sign_in);
         edtSignupName = vi.findViewById(R.id.edt_signup_name);
         edtSignupEmail = vi.findViewById(R.id.edt_signup_email);
         edtSignupPassword = vi.findViewById(R.id.edt_signup_password);
@@ -83,6 +85,14 @@ public class RegisterFragment extends Fragment {
                 }
             }
         });
+
+        tv_Signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginandRegisterholder.updateFragment(getFragmentManager().beginTransaction(),new LoginFragment(context),context);
+            }
+        });
+
 
 
         return vi;
