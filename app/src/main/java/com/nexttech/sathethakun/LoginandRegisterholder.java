@@ -12,8 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.nexttech.sathethakun.Fragments.LoginFragment;
 
 public class LoginandRegisterholder extends AppCompatActivity {
-    Fragment LoginFragment;
-    Fragment RegisterFragment;
+
     FirebaseAuth mAuth;
 
     @Override
@@ -24,14 +23,24 @@ public class LoginandRegisterholder extends AppCompatActivity {
 
 
 
-        updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(this),this);
+        updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(this),"login");
     }
 
-    public static void updateFragment(FragmentTransaction transaction,Fragment fragment,Context context){
-        transaction.replace(R.id.container,fragment);
+    public static void updateFragment(FragmentTransaction transaction,Fragment fragment,String tag){
+        transaction.replace(R.id.container,fragment,tag);
         transaction.commit();
     }
 
 
+    @Override
+    public void onBackPressed() {
+        LoginFragment test = (LoginFragment) getSupportFragmentManager().findFragmentByTag("login");
+        if(test!=null && test.isVisible()){
+            super.onBackPressed();
+        }else {
+            updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(LoginandRegisterholder.this),"login");
+        }
 
+
+    }
 }

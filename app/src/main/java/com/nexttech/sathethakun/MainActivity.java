@@ -3,6 +3,7 @@ package com.nexttech.sathethakun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.ImageDecoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -44,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseUser fUser;
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser,this);
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser,this);
+    }
 
     public static void updateUI(FirebaseUser currentUser, Context context) {
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i =new Intent(context,MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
-               // ((Activity)context).finish();
+                ((Activity)context).finish();
             }
         }else {
             Log.e("user","null");
@@ -102,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-
                 startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
+                finish();
 
             }
         });

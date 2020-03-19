@@ -6,66 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="@dimen/_5sdp"
-        android:padding="@dimen/_10sdp"
-        android:text="clear all"
-        android:id="@+id/clearAll"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            app:cardBackgroundColor="#FFF"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            card_view:cardCornerRadius="@dimen/_20sdp"
-            card_view:contentPadding="18dp"
-            card_view:cardElevation="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="@dimen/_32sdp"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:src="@drawable/profile_pic"
-                    android:id="@+id/profile_pic" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="21 minute ago"
-                        android:textSize="@dimen/_12sdp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mr. x send you a friend request"
-                        android:textSize="@dimen/_16sdp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_more_vert_black_24dp"
-            android:id="@+id/image_dot" />
-    </LinearLayout>
+
+
+
 
 </LinearLayout>
