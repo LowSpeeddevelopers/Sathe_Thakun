@@ -1,6 +1,7 @@
 package com.nexttech.sathethakun.Model;
 
 public class UserModel {
+    private String userID;
     private String name;
     private String email;
     private String phone;
@@ -11,7 +12,8 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String name, String email, String phone, String age, String address, String imageUri) {
+    public UserModel(String userID, String name, String email, String phone, String age, String address, String imageUri) {
+        this.userID = userID;
         this.name = name;
         this.email = email;
         this.phone = phone;

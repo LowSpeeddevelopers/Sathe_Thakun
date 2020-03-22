@@ -183,7 +183,7 @@ public class RegisterFragment extends Fragment {
 
         DatabaseReference myRef = database.getReference("Users").child(uid);
 
-        UserModel userModel = new UserModel(name, email, phone, age, address, myImageUrl);
+        UserModel userModel = new UserModel(uid, name, email, phone, age, address, myImageUrl);
 
         myRef.setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
