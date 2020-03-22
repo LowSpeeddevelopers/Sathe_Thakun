@@ -6,16 +6,18 @@ public class UserModel {
     private String phone;
     private String age;
     private String address;
+    private String imageUri;
 
     public UserModel() {
     }
 
-    public UserModel(String name, String email, String phone, String age, String address) {
+    public UserModel(String name, String email, String phone, String age, String address, String imageUri) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.age = age;
         this.address = address;
+        this.imageUri = imageUri;
     }
 
     public String getName() {
@@ -56,5 +58,13 @@ public class UserModel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

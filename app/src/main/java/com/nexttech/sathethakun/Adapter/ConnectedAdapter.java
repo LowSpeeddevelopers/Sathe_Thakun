@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,7 +57,13 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
         holder.itemUserName.setText(model.getName());
         holder.itemUserMobileNumber.setText(model.getPhone());
 
-        holder.itemProfilePic.setOnClickListener(new View.OnClickListener() {
+        if (model.getImageUri().equals("default")){
+            holder.itemProfilePic.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(context).load(model.getImageUri()).into(holder.itemProfilePic);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, ProfileActivity.class));

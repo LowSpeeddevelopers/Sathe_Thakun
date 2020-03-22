@@ -5,10 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.ImageDecoder;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,12 +35,15 @@ import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
 import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.UserModel;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
     Button btnStartService, btnStopService;
 
     CardView btnLogout;
 
-    TextView userNmae, userPhone;
+    TextView userName, userPhone;
+    CircleImageView ivProfilePic;
 
     BottomNavigationView bottomNavigation;
 
@@ -88,26 +90,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
-        userNmae = findViewById(R.id.tv_user_name);
+        userName = findViewById(R.id.tv_user_name);
         userPhone = findViewById(R.id.tv_user_phone);
+        ivProfilePic = findViewById(R.id.iv_profile_pic);
         btnLogout = findViewById(R.id.button_logout);
         //startActivity(new Intent(this,RegisterActivity.class));
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
         navigation_add = bottomNavigation.findViewById(R.id.add);
         navigation_request = bottomNavigation.findViewById(R.id.request);
 
-
-
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
-
-
-
-
-
-
-
 
         navigation_connected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,8 +170,14 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                userNmae.setText(userModel.getName());
+                userName.setText(userModel.getName());
                 userPhone.setText(userModel.getPhone());
+
+                if (userModel.getImageUri().equals("default")){
+                    ivProfilePic.setImageResource(R.mipmap.ic_launcher);
+                } else {
+                    Glide.with(getApplicationContext()).load(userModel.getImageUri()).into(ivProfilePic);
+                }
             }
 
             @Override

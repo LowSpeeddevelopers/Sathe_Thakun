@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -207,6 +208,12 @@ public class AddUsersFragment extends Fragment {
                 edtEmail.setText(userModel.getEmail());
                 edtPhoneNumber.setText(userModel.getPhone());
                 edtAddress.setText(userModel.getAddress());
+
+                if (userModel.getImageUri().equals("default")){
+                    ivProfilePic.setImageResource(R.mipmap.ic_launcher);
+                } else {
+                    Glide.with(getContext()).load(userModel.getImageUri()).into(ivProfilePic);
+                }
             }
 
             @Override

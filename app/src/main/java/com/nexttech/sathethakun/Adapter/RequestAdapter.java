@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -60,6 +61,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
         holder.itemUserName.setText(model.getName());
         holder.itemUserMobileNumber.setText(model.getPhone());
+
+        if (model.getImageUri().equals("default")){
+            holder.itemProfilePic.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(context).load(model.getImageUri()).into(holder.itemProfilePic);
+        }
 
         holder.itemRequestAccept.setOnClickListener(new View.OnClickListener() {
             @Override
