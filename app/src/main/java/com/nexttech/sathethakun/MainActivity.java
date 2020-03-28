@@ -6,20 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,25 +34,35 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.nexttech.sathethakun.Fragments.AddUsersFragment;
 import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
+import com.nexttech.sathethakun.Fragments.ProfileFragment;
 import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.UserModel;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class MainActivity extends AppCompatActivity {
+
     Button btnStartService, btnStopService;
 
-    CardView btnLogout;
+    CardView btnProfile, btnLogout;
 
     TextView userName, userPhone;
     CircleImageView ivProfilePic;
 
+    public static ProgressBar progressBar;
+
     BottomNavigationView bottomNavigation;
+    static DrawerLayout drawerLayout;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser fUser;
     TextView navigation_connected,navigation_add,navigation_request;
+
+    String activeUserName;
+
+    static TextView appTitle;
+    ImageView navdrawer;
 
     @Override
     protected void onStart() {
@@ -67,14 +79,12 @@ public class MainActivity extends AppCompatActivity {
             if(context instanceof MainActivity){
                 ((MainActivity)context).RetriveUserData();
             }else {
-                Log.e("activity","main");
                 Intent i =new Intent(context,MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
                 ((Activity)context).finish();
             }
         }else {
-            Log.e("user","null");
             Intent i = new Intent(context,LoginandRegisterholder.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
@@ -88,11 +98,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        appTitle = toolbar.findViewById(R.id.title);
+        navdrawer = toolbar.findViewById(R.id.nav_drawer);
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         userName = findViewById(R.id.tv_user_name);
         userPhone = findViewById(R.id.tv_user_phone);
         ivProfilePic = findViewById(R.id.iv_profile_pic);
+        progressBar = findViewById(R.id.progress_bar);
+        btnProfile = findViewById(R.id.button_profile);
         btnLogout = findViewById(R.id.button_logout);
         //startActivity(new Intent(this,RegisterActivity.class));
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
@@ -103,36 +122,51 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
 
+        navdrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDrawer();
+            }
+        });
+
         navigation_connected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new ConnectedUsersFragment());
+                openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
             }
         });
 
         navigation_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new AddUsersFragment());
+                openFragment(getSupportFragmentManager().beginTransaction(), new AddUsersFragment(), "Add User", false);
             }
         });
         navigation_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new RequestUsersFragment());
+                openFragment(getSupportFragmentManager().beginTransaction(), new RequestUsersFragment(), "Requests", false);
             }
         });
-
-
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         fUser = mAuth.getCurrentUser();
         updateUI(fUser,this);
 
+        openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = new ProfileFragment("my_profile");
+
+                openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
 
 
-        openFragment(new ConnectedUsersFragment());
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
+                activeUserName = userModel.getName();
+
                 userName.setText(userModel.getName());
                 userPhone.setText(userModel.getPhone());
 
@@ -199,10 +235,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    public static void openFragment(FragmentTransaction transaction, Fragment fragment, String title, boolean back) {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+
+        appTitle.setText(title);
+
+        if (back){
+            transaction.addToBackStack(null);
+        }
+
+        closeDrawer();
     }
 
     @Override
@@ -225,9 +268,22 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
+    }
+
+    public void openDrawer(){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    public static void closeDrawer(){
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public static void progressBarVisible(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public static void progressBarGone(){
+        progressBar.setVisibility(View.GONE);
     }
 }

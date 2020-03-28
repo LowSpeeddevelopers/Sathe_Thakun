@@ -2,7 +2,6 @@ package com.nexttech.sathethakun.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -41,12 +40,8 @@ import com.nexttech.sathethakun.LoginandRegisterholder;
 import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -203,7 +198,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 

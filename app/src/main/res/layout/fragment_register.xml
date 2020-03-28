@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterActivity">
+    tools:context=".Fragments.RegisterFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -106,18 +106,10 @@
                             android:id="@+id/editprofilepicture"
                             android:layout_width="@dimen/_35sdp"
                             android:layout_height="@dimen/_35sdp"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
                             app:cardCornerRadius="@dimen/_17sdp"
                             app:cardElevation="@dimen/_8sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.703"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.835">
+                            app:layout_constraintBottom_toBottomOf="@+id/profileimage"
+                            app:layout_constraintEnd_toEndOf="@id/profileimage">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"

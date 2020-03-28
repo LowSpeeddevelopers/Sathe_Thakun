@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nexttech.sathethakun.Adapter.ConnectedAdapter;
 import com.nexttech.sathethakun.Adapter.RequestAdapter;
+import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.RequestModel;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
@@ -61,6 +62,8 @@ public class ConnectedUsersFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
 
         myUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+        MainActivity.progressBarVisible();
 
         userConnectedList = new ArrayList<>();
 
@@ -104,6 +107,7 @@ public class ConnectedUsersFragment extends Fragment {
                         }
                     });
 
+                    MainActivity.progressBarGone();
                 }
             }
 

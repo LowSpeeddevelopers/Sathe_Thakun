@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.RequestModel;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
@@ -93,6 +94,7 @@ public class AddUsersFragment extends Fragment {
                 edtUserSearch.setError("Invalid mobile number");
                 edtUserSearch.requestFocus();
             } else {
+                MainActivity.progressBarVisible();
                 searchData(mobile);
             }
         });
@@ -155,6 +157,8 @@ public class AddUsersFragment extends Fragment {
                     layoutUserInfo.setVisibility(View.VISIBLE);
                     layoutUserNoInfo.setVisibility(View.GONE);
                 }
+
+                MainActivity.progressBarGone();
             }
 
             @Override

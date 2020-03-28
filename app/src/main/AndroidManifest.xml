@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LoginandRegisterholder" />
         <activity android:name=".ShowUserLocation" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".NotificationActitivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

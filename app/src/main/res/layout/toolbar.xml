@@ -1,44 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
-    app:contentInsetLeft="0dp"
-    app:contentInsetStart="0dp"
-    app:contentInsetRight="0dp"
-    app:contentInsetEnd="0dp">
+    android:background="@color/colorPrimary">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
+            android:id="@+id/nav_drawer"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"
-            android:src="@drawable/backicon"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:id="@+id/backbutton"
-            />
+            android:src="@drawable/menu" />
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Title"
-            android:textSize="@dimen/_20sdp"
+            android:textSize="@dimen/_18sdp"
             android:gravity="center"
-            android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textColor="#fff" />
 
-        <ImageView
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_gravity="center"
-            android:src="@drawable/menu"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:id="@+id/optionbutton"
-            />
+        <View
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginEnd="@dimen/_8sdp"/>
+
     </LinearLayout>
 </androidx.appcompat.widget.Toolbar>

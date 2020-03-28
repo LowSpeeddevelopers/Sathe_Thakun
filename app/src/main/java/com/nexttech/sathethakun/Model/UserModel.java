@@ -22,6 +22,14 @@ public class UserModel {
         this.imageUri = imageUri;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     public String getName() {
         return name;
     }

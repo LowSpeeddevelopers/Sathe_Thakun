@@ -1,6 +1,8 @@
 package com.nexttech.sathethakun.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.Fragments.ProfileFragment;
+import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
 
@@ -98,6 +103,27 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 holder.itemBtn.setVisibility(View.GONE);
                 holder.itemMsg.setText("Request Deleted");
                 holder.itemMsg.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent i = new Intent(context, ProfileActivity.class);
+//
+//                Bundle b = new Bundle();
+//
+//                b.putString("request_for", "request_profile");
+//                b.putString("user_id", model.getUserID());
+//                b.putString("request_id", requestKeys.get(position));
+//
+//                i.putExtras(b);
+//
+//                context.startActivity(i);
+
+                Fragment fragment = new ProfileFragment("request_profile", model.getUserID(), requestKeys.get(position));
+
+                MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
             }
         });
     }

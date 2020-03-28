@@ -2,23 +2,24 @@ package com.nexttech.sathethakun.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.Fragments.ProfileFragment;
+import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
-import com.nexttech.sathethakun.ProfileActivity;
 import com.nexttech.sathethakun.R;
 
 import java.util.List;
@@ -65,8 +66,12 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, ProfileActivity.class));
+            public void onClick(View view) {
+
+                Fragment fragment = new ProfileFragment("connected_profile", model.getUserID());
+
+                MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
+
             }
         });
 
@@ -89,9 +94,6 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
             itemUserName = itemView.findViewById(R.id.item_user_name);
             itemUserMobileNumber = itemView.findViewById(R.id.item_user_mobile_number);
             itemMsg = itemView.findViewById(R.id.item_msg);
-
-
-
 
         }
     }
