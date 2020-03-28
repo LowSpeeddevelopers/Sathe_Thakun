@@ -52,39 +52,94 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-                <TextView
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/connected"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Connected"
-                    android:padding="@dimen/_4sdp"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#fff"
-                    android:drawableTop="@drawable/connected"
-                    android:gravity="center"
-                    android:id="@+id/connected"/>
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Connected"
+                        android:padding="@dimen/_4sdp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:background="@color/colorPrimary"
+                        android:textColor="#fff"
+                        android:drawableTop="@drawable/connected"
+                        android:gravity="center"
+                        android:id="@+id/connected_txt"/>
+
+                    <TextView
+                        android:id="@+id/connected_count"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/white_round_shape"
+                        android:text="0"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_65sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        app:layout_constraintStart_toStartOf="@+id/connected_txt"
+                        app:layout_constraintTop_toTopOf="@+id/connected_txt" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Add People"
                     style="@style/TextAppearance.AppCompat.Medium"
+                    android:background="@color/colorPrimary"
                     android:textColor="#fff"
                     android:padding="@dimen/_4sdp"
                     android:drawableTop="@drawable/addpeople"
                     android:gravity="center"
                     android:id="@+id/add"/>
-                <TextView
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/request"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="@dimen/_4sdp"
-                    android:text="Requests"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#fff"
-                    android:drawableTop="@drawable/requests"
-                    android:gravity="center"
-                    android:id="@+id/request"/>
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_4sdp"
+                        android:text="Requests"
+                        android:background="@color/colorPrimary"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#fff"
+                        android:drawableTop="@drawable/requests"
+                        android:gravity="center"
+                        android:id="@+id/txt"/>
+
+                    <TextView
+                        android:id="@+id/request_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:background="@drawable/white_round_shape"
+                        android:text="0"
+                        android:textColor="@color/colorPrimary"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_65sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        app:layout_constraintStart_toStartOf="@+id/txt"
+                        app:layout_constraintTop_toTopOf="@+id/txt" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </LinearLayout>
             

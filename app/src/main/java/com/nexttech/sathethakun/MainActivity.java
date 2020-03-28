@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -36,7 +37,12 @@ import com.nexttech.sathethakun.Fragments.AddUsersFragment;
 import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
 import com.nexttech.sathethakun.Fragments.ProfileFragment;
 import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
+import com.nexttech.sathethakun.Model.RequestModel;
 import com.nexttech.sathethakun.Model.UserModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -57,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser fUser;
-    TextView navigation_connected,navigation_add,navigation_request;
+    TextView navigation_add, connectedCount, requestCount;
+    ConstraintLayout navigation_connected, navigation_request;
 
     String activeUserName;
 
@@ -113,10 +120,12 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         btnProfile = findViewById(R.id.button_profile);
         btnLogout = findViewById(R.id.button_logout);
-        //startActivity(new Intent(this,RegisterActivity.class));
+
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
         navigation_add = bottomNavigation.findViewById(R.id.add);
         navigation_request = bottomNavigation.findViewById(R.id.request);
+        connectedCount = bottomNavigation.findViewById(R.id.connected_count);
+        requestCount = bottomNavigation.findViewById(R.id.request_count);
 
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -178,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getConnectedUserCount();
+        getRequestUserCount();
+
 
         btnStartService = findViewById(R.id.buttonStartService);
         btnStopService = findViewById(R.id.buttonStopService);
@@ -192,6 +204,60 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopService();
+            }
+        });
+    }
+
+    private void getRequestUserCount() {
+        DatabaseReference myRef = database.getReference("User Requests");
+
+        final List<RequestModel> requests = new ArrayList<>();;
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                requests.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    RequestModel requestModel = snapshot.getValue(RequestModel.class);
+
+                    if (requestModel.getReceiver().equals(fUser.getUid())){
+                        requests.add(requestModel);
+                    }
+                }
+
+                if (requests.size()>0){
+                    requestCount.setVisibility(View.VISIBLE);
+                    requestCount.setText(String.valueOf(requests.size()));
+                } else {
+                    requestCount.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void getConnectedUserCount() {
+        DatabaseReference myRef = database.getReference("Connected").child(fUser.getUid());
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()){
+                    connectedCount.setVisibility(View.VISIBLE);
+                    connectedCount.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+                } else {
+                    connectedCount.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
