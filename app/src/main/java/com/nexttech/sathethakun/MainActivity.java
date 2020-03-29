@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.nexttech.sathethakun.Fragments.AddUsersFragment;
 import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
+import com.nexttech.sathethakun.Fragments.Help;
 import com.nexttech.sathethakun.Fragments.ProfileFragment;
 import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.RequestModel;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStartService, btnStopService;
 
-    CardView btnProfile, btnLogout;
+    CardView btnProfile, btnLogout , help;
 
     TextView userName, userPhone;
     CircleImageView ivProfilePic;
@@ -120,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         btnProfile = findViewById(R.id.button_profile);
         btnLogout = findViewById(R.id.button_logout);
-
+        help=findViewById(R.id.nav_help);
+        //startActivity(new Intent(this,RegisterActivity.class));
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
         navigation_add = bottomNavigation.findViewById(R.id.add);
         navigation_request = bottomNavigation.findViewById(R.id.request);
@@ -172,6 +174,18 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = new ProfileFragment("my_profile");
 
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
+
+
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = new ProfileFragment("help");
+
+                openFragment(getSupportFragmentManager().beginTransaction(), new Help(), "help", true);
 
 
             }

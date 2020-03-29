@@ -4,4 +4,40 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="directions_activity_toast_message">aknkdf</string>
+
+    <string name="text_on_off">How can I turn my alarm on or off?</string>
+    <string name="text_add_remainder">How can I add my remainder?</string>
+    <string name="text_priority">How does the priority work?</string>
+    <string name="text_update_delete">How can I update or delete my remainder?</string>
+    <string name="text_transfer">How do I share my app to others?</string>
+    <string-array name="string_array_on_off">
+        <item>Click on the switch button to turn on and off an alarm.</item>
+    </string-array>
+
+    <string-array name="string_array_remainder">
+        <item>Click on the "+" button at the bottom of the screen to add an remainder.It will show you two buttons of priority you want</item>
+        <item>Select the priority you want.</item>
+        <item>Type the title of your remainder at alarm field.</item>
+        <item>Type the information or description about your remainder in the description field to set your remainder description.</item>
+        <item>Pick the date you want to set alarm from the calender icon.</item>
+        <item>Pick the time you want to set the alarm from the watch icon.</item>
+        <item>Click save and you are good to go. Your alarm is set.</item>
+        <item>Hide priority again click on the "+" button</item>
+    </string-array>
+
+    <string-array name="string_array_priority">
+        <item>In low priority by default only vibration is selected</item>
+        <item>In high priority both ring and vibration is selected</item>
+        <item>Click Low button to show low priority</item>
+        <item>Click High button to show high priority</item>
+    </string-array>
+
+    <string-array name="string_array_update_delete">
+        <item>Swipe from right to left on your remainder to get the update or delete option.</item>
+    </string-array>
+
+    <string-array name="string_array_transfer">
+        <item>Click the share button to share your app with others.</item>
+    </string-array>
+
 </resources>
