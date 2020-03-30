@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.PrivacyPolicyFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Privacy Policy"
-        android:textSize="@dimen/_24sdp"
-        android:textColor="@color/colorPrimary"
-        android:gravity="center"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/privacy_policy"/>
 
 </FrameLayout>
