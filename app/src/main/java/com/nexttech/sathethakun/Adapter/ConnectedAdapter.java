@@ -2,10 +2,10 @@ package com.nexttech.sathethakun.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nexttech.sathethakun.DirectionsActivity;
 import com.nexttech.sathethakun.Fragments.ProfileFragment;
 import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
@@ -75,6 +76,15 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
             }
         });
 
+        holder.btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, DirectionsActivity.class);
+
+                context.startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -85,7 +95,8 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView itemProfilePic;
-        TextView itemUserName, itemUserMobileNumber, itemMsg;
+        TextView itemUserName, itemUserMobileNumber;
+        Button btnLocation;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,7 +104,7 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
             itemProfilePic = itemView.findViewById(R.id.item_profile_pic);
             itemUserName = itemView.findViewById(R.id.item_user_name);
             itemUserMobileNumber = itemView.findViewById(R.id.item_user_mobile_number);
-            itemMsg = itemView.findViewById(R.id.item_msg);
+            btnLocation = itemView.findViewById(R.id.btn_location);
 
         }
     }

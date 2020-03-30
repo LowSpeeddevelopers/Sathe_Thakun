@@ -49,13 +49,15 @@
                 android:gravity="right"
                 android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/item_msg"
+                <Button
+                    android:id="@+id/btn_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connected"
+                    android:textAllCaps="false"
+                    android:text="Location"
+                    android:backgroundTint="@color/colorButton"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
             </LinearLayout>
 

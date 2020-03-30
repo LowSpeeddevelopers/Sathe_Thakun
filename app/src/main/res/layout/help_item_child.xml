@@ -8,14 +8,12 @@
 
 
     <TextView
-        android:id="@+id/textViewGroup"
-        android:layout_width="fill_parent"
+        android:id="@+id/text_view_child"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
         android:textColor="@color/colorAccent"
         android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textSize="@dimen/_17sdp"
+        android:textSize="@dimen/_16sdp"
         tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

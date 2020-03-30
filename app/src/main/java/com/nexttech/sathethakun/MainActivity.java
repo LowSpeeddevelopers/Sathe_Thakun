@@ -35,7 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.nexttech.sathethakun.Fragments.AddUsersFragment;
 import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
-import com.nexttech.sathethakun.Fragments.Help;
+import com.nexttech.sathethakun.Fragments.HelpFragment;
+import com.nexttech.sathethakun.Fragments.PrivacyPolicyFragment;
 import com.nexttech.sathethakun.Fragments.ProfileFragment;
 import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.RequestModel;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStartService, btnStopService;
 
-    CardView btnProfile, btnLogout , help;
+    CardView btnProfile, btnLogout , btnHelp, btnPrivacyPolicy;
 
     TextView userName, userPhone;
     CircleImageView ivProfilePic;
@@ -121,8 +122,10 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         btnProfile = findViewById(R.id.button_profile);
         btnLogout = findViewById(R.id.button_logout);
-        help=findViewById(R.id.nav_help);
-        //startActivity(new Intent(this,RegisterActivity.class));
+        btnHelp=findViewById(R.id.button_help);
+        btnPrivacyPolicy = findViewById(R.id.button_privacy_policy);
+
+
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
         navigation_add = bottomNavigation.findViewById(R.id.add);
         navigation_request = bottomNavigation.findViewById(R.id.request);
@@ -179,14 +182,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        help.setOnClickListener(new View.OnClickListener() {
+        btnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Fragment fragment = new ProfileFragment("help");
+                Fragment fragment = new PrivacyPolicyFragment();
 
-                openFragment(getSupportFragmentManager().beginTransaction(), new Help(), "help", true);
+                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Privacy Policy", true);
 
+            }
+        });
+
+        btnHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = new HelpFragment();
+
+                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Help", true);
 
             }
         });

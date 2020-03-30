@@ -11,7 +11,6 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
@@ -25,7 +24,6 @@ import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +40,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class Directions extends AppCompatActivity {
+public class DirectionsActivity extends AppCompatActivity {
 
     private static final String ROUTE_LAYER_ID = "route-layer-id";
     private static final String ROUTE_SOURCE_ID = "route-source-id";
@@ -75,17 +73,17 @@ public class Directions extends AppCompatActivity {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
 // Set the origin location to the Alhambra landmark in Granada, Spain.
-                        origin = Point.fromLngLat(-3.588098, 37.176164);
+                        origin = Point.fromLngLat(89.0108442, 25.1861264);
 
 // Set the destination location to the Plaza del Triunfo in Granada, Spain.
-                        destination = Point.fromLngLat(-3.601845, 37.184080);
+                        destination = Point.fromLngLat(89.0245198, 25.1026221);
 
                         initSource(style);
 
                         initLayers(style);
 
 // Get the directions route from the Mapbox Directions API
-                        getRoute(mapboxMap, origin, destination);
+                        //getRoute(mapboxMap, origin, destination);
                     }
                 });
             }
@@ -116,7 +114,8 @@ public class Directions extends AppCompatActivity {
                 lineCap(Property.LINE_CAP_ROUND),
                 lineJoin(Property.LINE_JOIN_ROUND),
                 lineWidth(5f),
-                lineColor(Color.parseColor("#009688"))
+                //lineColor(Color.parseColor("#009688"))
+                lineColor(getResources().getColor(R.color.colorPrimary))
         );
         loadedMapStyle.addLayer(routeLayer);
 
@@ -165,7 +164,7 @@ public class Directions extends AppCompatActivity {
                 currentRoute = response.body().routes().get(0);
 
 // Make a toast which displays the route's distance
-                Toast.makeText(Directions.this, ""+currentRoute.distance(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DirectionsActivity.this, ""+currentRoute.distance(), Toast.LENGTH_SHORT).show();
 
                 if (mapboxMap != null) {
                     mapboxMap.getStyle(new Style.OnStyleLoaded() {
@@ -190,7 +189,7 @@ public class Directions extends AppCompatActivity {
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
                 Timber.e("Error: " + throwable.getMessage());
-                Toast.makeText(Directions.this, "Error: " + throwable.getMessage(),
+                Toast.makeText(DirectionsActivity.this, "Error: " + throwable.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });

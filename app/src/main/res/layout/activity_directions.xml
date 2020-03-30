@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Directions">
+    tools:context=".DirectionsActivity">
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat="37.1792"
-        mapbox:mapbox_cameraTargetLng="-3.5953"
+        mapbox:mapbox_cameraTargetLat="89.0108442"
+        mapbox:mapbox_cameraTargetLng="25.1861264"
         mapbox:mapbox_cameraZoom="14"/>
 
 </FrameLayout>
