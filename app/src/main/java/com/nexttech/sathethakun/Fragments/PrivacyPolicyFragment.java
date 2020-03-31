@@ -26,15 +26,15 @@ public class PrivacyPolicyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_privacy_policy, container, false);
-        String[] menuitems ={"Personal information\n" +
-                "We use offline database to store one’s current settings and we use google’s firebase database to track your location and store your personal information. This project is provided by the govt so one should not concern about their information leackage. ",
-                "We also collect personally identifiable information that you provide to us, such as your name, phone number, photo, email address and geographical location. With your permission, we may also access other personal information on your device, such as your phone book, calendar or messages, in order to provide services to you.",
-                "We store all these personal data under the Digital Security Act 2018, Bangladesh.",
-                "Ads are served to you only from Google Admob.",
-                "We will post any privacy policy changes on this page and, if the changes are significant, we will provide a more prominent notice.",
-                "If you have any question about this Privacy Policy, please contact us!"
-
-
+        String[] menuitems ={
+            "Sathe Thakun uses an offline database to store one’s current settings and use google’s firebase database to track user location and store user information.",
+            "This application is built under a government funded project so one should not be concerned about their information leakage.",
+            "Sathe Thakun also collects personally identifiable information that users provide to us, such as name, phone number, photo, email address and geographical location.",
+            "By taking user permission, Sathe Thakun may also access other personal information on the user's device, such as phone book, calendar in order to provide better services.",
+            "Sathe Thakun stores all personal data under the Digital Security Act 2018, Bangladesh.",
+            "Ads are served to you only from Google Admob.",
+            "Team Sathe Thakun will post any privacy policy changes on this page and, if the changes are significant, we will provide a more prominent notice.",
+            "If you have any questions about this Privacy Policy, please contact us."
         };
         ListView listView = (ListView) view.findViewById(R.id.privacy_policy);
         ArrayAdapter<String> listViewAdaptar = new ArrayAdapter<String>(
