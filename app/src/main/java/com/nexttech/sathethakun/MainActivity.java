@@ -87,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
 
             if(context instanceof MainActivity){
                 ((MainActivity)context).RetriveUserData();
+                ((MainActivity)context).getConnectedUserCount();
+                ((MainActivity)context).getRequestUserCount();
+
+                ((MainActivity)context).startService();
+
             }else {
                 Intent i =new Intent(context,MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -214,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getConnectedUserCount();
-        getRequestUserCount();
+
 
 
         btnStartService = findViewById(R.id.buttonStartService);
