@@ -37,6 +37,18 @@
                 android:visibility="gone"
                 android:layout_gravity="center" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                app:backgroundTint="@color/alertGreen"
+                app:tint="@android:color/white"
+                android:src="@drawable/ic_alert" />
+
         </FrameLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -260,7 +272,7 @@
                         android:layout_margin="@dimen/_8sdp"
                         app:cardElevation="@dimen/_5sdp"
                         app:cardCornerRadius="@dimen/_5sdp"
-                        android:id="@+id/button_home">
+                        android:id="@+id/button_about">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -289,7 +301,7 @@
                         android:layout_margin="@dimen/_8sdp"
                         app:cardElevation="@dimen/_5sdp"
                         app:cardCornerRadius="@dimen/_5sdp"
-                        android:id="@+id/button_setting">
+                        android:id="@+id/button_notification">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -10,4 +10,7 @@
 
     <color name="colorButton">#fff</color>
 
+    <color name="alertRed">#E41212</color>
+    <color name="alertGreen">#36F43E</color>
+
 </resources>

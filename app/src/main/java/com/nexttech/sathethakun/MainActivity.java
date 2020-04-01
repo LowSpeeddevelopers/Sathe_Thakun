@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.nexttech.sathethakun.Fragments.AddUsersFragment;
 import com.nexttech.sathethakun.Fragments.ConnectedUsersFragment;
+import com.nexttech.sathethakun.Fragments.ContactFragment;
 import com.nexttech.sathethakun.Fragments.HelpFragment;
 import com.nexttech.sathethakun.Fragments.PrivacyPolicyFragment;
 import com.nexttech.sathethakun.Fragments.ProfileFragment;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStartService, btnStopService;
 
-    CardView btnProfile, btnLogout , btnHelp, btnPrivacyPolicy;
+    CardView btnProfile, btnAbout, btnNotification, btnLogout , btnHelp, btnPrivacyPolicy;
 
     TextView userName, userPhone;
     CircleImageView ivProfilePic;
@@ -68,10 +72,14 @@ public class MainActivity extends AppCompatActivity {
     TextView navigation_add, connectedCount, requestCount;
     ConstraintLayout navigation_connected, navigation_request;
 
+    FloatingActionButton fabAlert;
+
     String activeUserName;
 
     static TextView appTitle;
     ImageView navdrawer;
+
+    boolean alert = false;
 
     @Override
     protected void onStart() {
@@ -126,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
         ivProfilePic = findViewById(R.id.iv_profile_pic);
         progressBar = findViewById(R.id.progress_bar);
         btnProfile = findViewById(R.id.button_profile);
+        btnAbout = findViewById(R.id.button_about);
+        btnNotification = findViewById(R.id.button_notification);
         btnLogout = findViewById(R.id.button_logout);
         btnHelp=findViewById(R.id.button_help);
         btnPrivacyPolicy = findViewById(R.id.button_privacy_policy);
+        fabAlert = findViewById(R.id.fab_alert);
 
 
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
@@ -137,9 +148,26 @@ public class MainActivity extends AppCompatActivity {
         connectedCount = bottomNavigation.findViewById(R.id.connected_count);
         requestCount = bottomNavigation.findViewById(R.id.request_count);
 
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        fUser = mAuth.getCurrentUser();
+        updateUI(fUser,this);
+
+        openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
+
+        fetchAlertData();
+
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
+        
+        fabAlert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAlert();
+            }
+        });
 
         navdrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,13 +196,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        fUser = mAuth.getCurrentUser();
-        updateUI(fUser,this);
-
-        openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
-
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,6 +205,23 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
 
 
+            }
+        });
+
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ContactFragment();
+
+                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Contact Us", false);
+            }
+        });
+
+        btnNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(i);
             }
         });
 
@@ -237,6 +275,53 @@ public class MainActivity extends AppCompatActivity {
                 stopService();
             }
         });
+    }
+
+    private void fetchAlertData() {
+        DatabaseReference ref = database.getReference("Emergency").child(fUser.getUid());
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean res = dataSnapshot.getValue(Boolean.class);
+
+                if (res){
+                    alert = true;
+
+                    fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertRed)));
+                } else {
+                    alert = false;
+
+                    fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertGreen)));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setAlert() {
+        if (alert){
+            alert = false;
+
+            fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertGreen)));
+
+            Toast.makeText(this, "Alert off", Toast.LENGTH_SHORT).show();
+        } else {
+            alert = true;
+
+            fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertRed)));
+
+            Toast.makeText(this, "Alert on", Toast.LENGTH_SHORT).show();
+        }
+
+        DatabaseReference ref = database.getReference("Emergency").child(fUser.getUid());
+
+        ref.setValue(alert);
     }
 
     private void getRequestUserCount() {

@@ -187,6 +187,10 @@ public class RegisterFragment extends Fragment {
                     DatabaseReference myRef2 = database.getReference("Search User").child(phone);
                     myRef2.setValue(uid);
 
+                    DatabaseReference ref = database.getReference("Emergency").child(uid);
+
+                    ref.setValue(false);
+
                     Toast.makeText(context,"successful",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(context,"unsuccessful",Toast.LENGTH_SHORT).show();
