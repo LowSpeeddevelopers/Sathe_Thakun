@@ -1,12 +1,28 @@
 package com.nexttech.sathethakun;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -16,182 +32,264 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+import static android.graphics.Color.parseColor;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.color;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lineProgress;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.linear;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineGradient;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class DirectionsActivity extends AppCompatActivity {
 
+
+    MapView mapView;
+    MapboxMap mapbox;
+    DatabaseReference reference;
+    TextView seenstatus;
+
+    ImageView reset;
+
+    private static final String ORIGIN_ICON_ID = "origin-icon-id";
+    private static final String DESTINATION_ICON_ID = "destination-icon-id";
     private static final String ROUTE_LAYER_ID = "route-layer-id";
-    private static final String ROUTE_SOURCE_ID = "route-source-id";
+    private static final String ROUTE_LINE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
-    private static final String RED_PIN_ICON_ID = "red-pin-icon-id";
-    private MapView mapView;
-    private DirectionsRoute currentRoute;
-    private MapboxDirections client;
-    private Point origin;
-    private Point destination;
+
+
+    // Adjust variables below to change the example's UI
+    private static Point ORIGIN_POINT = Point.fromLngLat(90.393358, 23.749831);
+    private static Point DESTINATION_POINT = Point.fromLngLat(90.376952, 23.787238);
+
+    private static final float LINE_WIDTH = 6f;
+    private static final String ORIGIN_COLOR = "#2096F3";
+    private static final String DESTINATION_COLOR = "#F84D4D";
+
+
+
+    private LatLng currentPosition = new LatLng(64.900932, -18.167040);
+
+    private GeoJsonSource geoJsonSource;
+    private ValueAnimator animator;
+    int init = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-// Mapbox access token is configured here. This needs to be called either in your application
-// object or in the same activity which contains the mapview.
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
-
-// This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_directions);
+        Intent intent = getIntent();
+        String userid = intent.getStringExtra("userid");
+        seenstatus = findViewById(R.id.seenstatus);
+        reset = findViewById(R.id.reset);
 
-// Setup the MapView
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateCamera();
+            }
+        });
+
+        reference = FirebaseDatabase.getInstance().getReference().child("Location").child(userid);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Toast.makeText(DirectionsActivity.this, "data changed", Toast.LENGTH_SHORT).show();
+
+                String time = dataSnapshot.child("time").getValue().toString();
+                String lati = dataSnapshot.child("latitude").getValue().toString();
+                String longi = dataSnapshot.child("longitude").getValue().toString();
+                seenstatus.setText("User was last seen at: "+time);
+
+
+                Log.e("long",time + "  "+lati +"  "+longi);
+                LatLng point = new LatLng();
+                point.setLatitude(Double.parseDouble(lati));
+                point.setLongitude(Double.parseDouble(longi));
+
+
+                if (animator != null && animator.isStarted()) {
+                    currentPosition = (LatLng) animator.getAnimatedValue();
+                    animator.cancel();
+                }
+
+                animator = ObjectAnimator
+                        .ofObject(latLngEvaluator, currentPosition, point)
+                        .setDuration(2000);
+                animator.addUpdateListener(animatorUpdateListener);
+                animator.start();
+
+                currentPosition = point;
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                mapbox = mapboxMap;
+
+
+
+                geoJsonSource = new GeoJsonSource("source-id",
+                        Feature.fromGeometry(ORIGIN_POINT));
+
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-// Set the origin location to the Alhambra landmark in Granada, Spain.
-                        origin = Point.fromLngLat(89.0108442, 25.1861264);
 
-// Set the destination location to the Plaza del Triunfo in Granada, Spain.
-                        destination = Point.fromLngLat(89.0245198, 25.1026221);
-
-                        initSource(style);
-
+                        initSources(style);
                         initLayers(style);
 
-// Get the directions route from the Mapbox Directions API
-                        //getRoute(mapboxMap, origin, destination);
+
+                        animateCamera();
+
+
+
+                        style.addImage(("marker_icon"), BitmapFactory.decodeResource(
+                                getResources(), R.drawable.red_marker));
+
+                        style.addSource(geoJsonSource);
+
+                        style.addLayer(new SymbolLayer("layer-id", "source-id")
+                                .withProperties(
+                                        PropertyFactory.iconImage("marker_icon"),
+                                        PropertyFactory.iconIgnorePlacement(true),
+                                        PropertyFactory.iconAllowOverlap(true)
+                                ));
+
+                        Toast.makeText(
+                                DirectionsActivity.this,
+                                "balsal",
+                                Toast.LENGTH_LONG
+                        ).show();
+
                     }
                 });
             }
         });
     }
 
-    /**
-     * Add the route and marker sources to the map
-     */
-    private void initSource(@NonNull Style loadedMapStyle) {
-        loadedMapStyle.addSource(new GeoJsonSource(ROUTE_SOURCE_ID,
-                FeatureCollection.fromFeatures(new Feature[] {})));
 
-        GeoJsonSource iconGeoJsonSource = new GeoJsonSource(ICON_SOURCE_ID, FeatureCollection.fromFeatures(new Feature[] {
-                Feature.fromGeometry(Point.fromLngLat(origin.longitude(), origin.latitude())),
-                Feature.fromGeometry(Point.fromLngLat(destination.longitude(), destination.latitude()))}));
-        loadedMapStyle.addSource(iconGeoJsonSource);
+
+    private void animateCamera(){
+        CameraPosition position = new CameraPosition.Builder()
+                .target(new LatLng(currentPosition.getLatitude(), currentPosition.getLongitude())) // Sets the new camera position
+                .zoom(14) // Sets the zoom
+                .bearing(180) // Rotate the camera
+                .tilt(30) // Set the camera tilt
+                .build(); // Creates a CameraPosition from the builder
+
+        mapbox.animateCamera(CameraUpdateFactory
+                .newCameraPosition(position), 7000);
     }
 
-    /**
-     * Add the route and marker icon layers to the map
-     */
     private void initLayers(@NonNull Style loadedMapStyle) {
-        LineLayer routeLayer = new LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID);
-
 // Add the LineLayer to the map. This layer will display the directions route.
-        routeLayer.setProperties(
+        loadedMapStyle.addLayer(new LineLayer(ROUTE_LAYER_ID, ROUTE_LINE_SOURCE_ID).withProperties(
                 lineCap(Property.LINE_CAP_ROUND),
                 lineJoin(Property.LINE_JOIN_ROUND),
-                lineWidth(5f),
-                //lineColor(Color.parseColor("#009688"))
-                lineColor(getResources().getColor(R.color.colorPrimary))
-        );
-        loadedMapStyle.addLayer(routeLayer);
+                lineWidth(LINE_WIDTH),
+                lineGradient(interpolate(
+                        linear(), lineProgress(),
 
-// Add the red marker icon image to the map
-//        loadedMapStyle.addImage(RED_PIN_ICON_ID, BitmapUtils.getBitmapFromDrawable(
-//                getResources().getDrawable(R.drawable.red_marker)));
+// This is where the gradient color effect is set. 0 -> 1 makes it a two-color gradient
+// See LineGradientActivity for an example of a 2+ multiple color gradient line.
+                        stop(0f, color(parseColor(ORIGIN_COLOR))),
+                        stop(1f, color(parseColor(DESTINATION_COLOR)))
+                ))));
 
-// Add the red marker icon SymbolLayer to the map
+// Add the SymbolLayer to the map to show the origin and destination pin markers
         loadedMapStyle.addLayer(new SymbolLayer(ICON_LAYER_ID, ICON_SOURCE_ID).withProperties(
-                iconImage(RED_PIN_ICON_ID),
+                iconImage(match(get("originDestination"),
+                        literal("origin"),
+                        stop("origin", ORIGIN_ICON_ID),
+                        stop("destination", DESTINATION_ICON_ID))),
                 iconIgnorePlacement(true),
                 iconAllowOverlap(true),
-                iconOffset(new Float[] {0f, -9f})));
+                iconOffset(new Float[]{0f, -4f})));
+    }
+    private void initSources(@NonNull Style loadedMapStyle) {
+        loadedMapStyle.addSource(new GeoJsonSource(ROUTE_LINE_SOURCE_ID, new GeoJsonOptions().withLineMetrics(true)));
+        loadedMapStyle.addSource(new GeoJsonSource(ICON_SOURCE_ID, getOriginAndDestinationFeatureCollection()));
     }
 
-    /**
-     * Make a request to the Mapbox Directions API. Once successful, pass the route to the
-     * route layer.
-     * @param mapboxMap the Mapbox map object that the route will be drawn on
-     * @param origin      the starting point of the route
-     * @param destination the desired finish point of the route
-     */
-    private void getRoute(MapboxMap mapboxMap, Point origin, Point destination) {
-        client = MapboxDirections.builder()
-                .origin(origin)
-                .destination(destination)
-                .overview(DirectionsCriteria.OVERVIEW_FULL)
-                .profile(DirectionsCriteria.PROFILE_DRIVING)
-                .accessToken(getString(R.string.mapbox_access_token))
-                .build();
 
-        client.enqueueCall(new Callback<DirectionsResponse>() {
-            @Override
-            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-// You can get the generic HTTP info about the response
-                Timber.d("Response code: " + response.code());
-                if (response.body() == null) {
-                    Timber.e("No routes found, make sure you set the right user and access token.");
-                    return;
-                } else if (response.body().routes().size() < 1) {
-                    Timber.e("No routes found");
-                    return;
-                }
-
-// Get the directions route
-                currentRoute = response.body().routes().get(0);
-
-// Make a toast which displays the route's distance
-                Toast.makeText(DirectionsActivity.this, ""+currentRoute.distance(), Toast.LENGTH_SHORT).show();
-
-                if (mapboxMap != null) {
-                    mapboxMap.getStyle(new Style.OnStyleLoaded() {
-                        @Override
-                        public void onStyleLoaded(@NonNull Style style) {
-
-// Retrieve and update the source designated for showing the directions route
-                            GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
-
-// Create a LineString with the directions route's geometry and
-// reset the GeoJSON source for the route LineLayer source
-                            if (source != null) {
-                                Timber.d("onResponse: source != null");
-                                source.setGeoJson(FeatureCollection.fromFeature(
-                                        Feature.fromGeometry(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6))));
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                Timber.e("Error: " + throwable.getMessage());
-                Toast.makeText(DirectionsActivity.this, "Error: " + throwable.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    private FeatureCollection getOriginAndDestinationFeatureCollection() {
+        Feature originFeature = Feature.fromGeometry(ORIGIN_POINT);
+        originFeature.addStringProperty("originDestination", "origin");
+        Feature destinationFeature = Feature.fromGeometry(DESTINATION_POINT);
+        destinationFeature.addStringProperty("originDestination", "destination");
+        return FeatureCollection.fromFeatures(new Feature[]{originFeature, destinationFeature});
     }
+
+    private final ValueAnimator.AnimatorUpdateListener animatorUpdateListener =
+            new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    LatLng animatedPosition = (LatLng) valueAnimator.getAnimatedValue();
+                    geoJsonSource.setGeoJson(Point.fromLngLat(animatedPosition.getLongitude(), animatedPosition.getLatitude()));
+                }
+            };
+
+    private static final TypeEvaluator<LatLng> latLngEvaluator = new TypeEvaluator<LatLng>() {
+
+        private final LatLng latLng = new LatLng();
+
+        @Override
+        public LatLng evaluate(float fraction, LatLng startValue, LatLng endValue) {
+            latLng.setLatitude(startValue.getLatitude()
+                    + ((endValue.getLatitude() - startValue.getLatitude()) * fraction));
+            latLng.setLongitude(startValue.getLongitude()
+                    + ((endValue.getLongitude() - startValue.getLongitude()) * fraction));
+            return latLng;
+        }
+    };
 }

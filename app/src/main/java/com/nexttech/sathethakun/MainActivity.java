@@ -6,15 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -25,6 +28,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,6 +50,8 @@ import com.nexttech.sathethakun.Fragments.RequestUsersFragment;
 import com.nexttech.sathethakun.Model.RequestModel;
 import com.nexttech.sathethakun.Model.UserModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +60,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnStartService, btnStopService;
+
 
     CardView btnProfile, btnAbout, btnNotification, btnLogout , btnHelp, btnPrivacyPolicy;
 
@@ -84,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        //startActivity(new Intent(this,DirectionsActivity.class));
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser,this);
@@ -120,15 +128,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appTitle = toolbar.findViewById(R.id.title);
         navdrawer = toolbar.findViewById(R.id.nav_drawer);
-
         bottomNavigation = findViewById(R.id.bottom_navigation);
         drawerLayout = findViewById(R.id.drawer_layout);
-
         userName = findViewById(R.id.tv_user_name);
         userPhone = findViewById(R.id.tv_user_phone);
         ivProfilePic = findViewById(R.id.iv_profile_pic);
@@ -140,49 +145,49 @@ public class MainActivity extends AppCompatActivity {
         btnHelp=findViewById(R.id.button_help);
         btnPrivacyPolicy = findViewById(R.id.button_privacy_policy);
         fabAlert = findViewById(R.id.fab_alert);
-
-
         navigation_connected = bottomNavigation.findViewById(R.id.connected);
         navigation_add = bottomNavigation.findViewById(R.id.add);
         navigation_request = bottomNavigation.findViewById(R.id.request);
         connectedCount = bottomNavigation.findViewById(R.id.connected_count);
         requestCount = bottomNavigation.findViewById(R.id.request_count);
-
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         fUser = mAuth.getCurrentUser();
         updateUI(fUser,this);
-
         openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
-
         fetchAlertData();
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(getApplicationContext())) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 5000);
+            }
+        }
+
 
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
-        
         fabAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setAlert();
             }
         });
-
         navdrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDrawer();
             }
         });
-
         navigation_connected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
             }
         });
-
         navigation_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,28 +200,20 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(getSupportFragmentManager().beginTransaction(), new RequestUsersFragment(), "Requests", false);
             }
         });
-
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Fragment fragment = new ProfileFragment("my_profile");
-
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
-
-
             }
         });
-
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new ContactFragment();
-
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Contact Us", false);
             }
         });
-
         btnNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -224,82 +221,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
         btnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Fragment fragment = new PrivacyPolicyFragment();
-
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Privacy Policy", true);
-
             }
         });
-
         btnHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Fragment fragment = new HelpFragment();
-
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Help", true);
-
             }
         });
-
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
                 startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
                 finish();
-
-            }
-        });
-
-
-
-
-        btnStartService = findViewById(R.id.buttonStartService);
-        btnStopService = findViewById(R.id.buttonStopService);
-
-        btnStartService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startService();
-            }
-        });
-        btnStopService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopService();
             }
         });
     }
-
     private void fetchAlertData() {
         DatabaseReference ref = database.getReference("Emergency").child(fUser.getUid());
-
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Boolean res = dataSnapshot.getValue(Boolean.class);
-
-                if (res){
+                if (res!=null && res){
                     alert = true;
-
                     fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertRed)));
                 } else {
                     alert = false;
-
                     fabAlert.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.alertGreen)));
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -327,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
     private void getRequestUserCount() {
         DatabaseReference myRef = database.getReference("User Requests");
 
-        final List<RequestModel> requests = new ArrayList<>();;
+        final List<RequestModel> requests = new ArrayList<>();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -431,40 +391,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Toast.makeText(this, "Location Permission Granted!", Toast.LENGTH_SHORT).show();
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(MainActivity.this, "Permission denied 'Access Location'", Toast.LENGTH_SHORT).show();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (requestCode == 5000 && resultCode == RESULT_OK) {
+                if (Settings.canDrawOverlays(this)) {
+                    Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NotNull String[] permissions, @NotNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Location Permission Granted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Permission denied 'Access Location'", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     public void openDrawer(){
         drawerLayout.openDrawer(GravityCompat.START);
     }
-
     public static void closeDrawer(){
         drawerLayout.closeDrawer(GravityCompat.START);
     }
-
     public static void progressBarVisible(){
         progressBar.setVisibility(View.VISIBLE);
     }
-
     public static void progressBarGone(){
         progressBar.setVisibility(View.GONE);
     }

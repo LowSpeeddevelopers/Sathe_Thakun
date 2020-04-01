@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+
+    android:layout_height="@dimen/_300sdp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:text="Warning!"
+        android:gravity="center"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:background="@color/alertRed"
+        android:textColor="#fff"/>
+    <TextView
+        android:id="@+id/worningmessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="User someone might be in trouble would you like to see his location or call him?"
+        android:gravity="center"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#000"
+        android:layout_margin="@dimen/_8sdp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="Call"
+            android:layout_width="0dp"
+            android:textColor="#fff"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/alertGreen"
+            android:id="@+id/call"
+            android:gravity="center"/>
+        <TextView
+            android:text="Open Location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:background="@color/alertRed"
+            android:id="@+id/openlocation"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

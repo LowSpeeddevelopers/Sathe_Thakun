@@ -80,7 +80,7 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, DirectionsActivity.class);
-
+                i.putExtra("userid",model.getUserID());
                 context.startActivity(i);
             }
         });
