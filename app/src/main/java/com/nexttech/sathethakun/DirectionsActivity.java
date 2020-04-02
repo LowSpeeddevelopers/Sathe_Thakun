@@ -34,6 +34,7 @@ import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.constants.MapboxConstants;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -104,7 +105,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private LatLng currentPosition = new LatLng(64.900932, -18.167040);
 
-    private GeoJsonSource geoJsonSource;
+    private static GeoJsonSource geoJsonSource;
     private ValueAnimator animator;
     int init = 0;
 
@@ -125,59 +126,16 @@ public class DirectionsActivity extends AppCompatActivity {
             }
         });
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Location").child(userid);
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Toast.makeText(DirectionsActivity.this, "data changed", Toast.LENGTH_SHORT).show();
-
-                String time = dataSnapshot.child("time").getValue().toString();
-                String lati = dataSnapshot.child("latitude").getValue().toString();
-                String longi = dataSnapshot.child("longitude").getValue().toString();
-                seenstatus.setText("User was last seen at: "+time);
-
-
-                Log.e("long",time + "  "+lati +"  "+longi);
-                LatLng point = new LatLng();
-                point.setLatitude(Double.parseDouble(lati));
-                point.setLongitude(Double.parseDouble(longi));
-
-
-                if (animator != null && animator.isStarted()) {
-                    currentPosition = (LatLng) animator.getAnimatedValue();
-                    animator.cancel();
-                }
-
-                animator = ObjectAnimator
-                        .ofObject(latLngEvaluator, currentPosition, point)
-                        .setDuration(2000);
-                animator.addUpdateListener(animatorUpdateListener);
-                animator.start();
-
-                currentPosition = point;
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         mapView = findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
+
+
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
                 mapbox = mapboxMap;
-
-
-
                 geoJsonSource = new GeoJsonSource("source-id",
                         Feature.fromGeometry(ORIGIN_POINT));
 
@@ -213,6 +171,57 @@ public class DirectionsActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+
+
+        reference = FirebaseDatabase.getInstance().getReference().child("Location").child(userid);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Toast.makeText(DirectionsActivity.this, "data changed", Toast.LENGTH_SHORT).show();
+
+                String time = dataSnapshot.child("time").getValue().toString();
+                String lati = dataSnapshot.child("latitude").getValue().toString();
+                String longi = dataSnapshot.child("longitude").getValue().toString();
+                seenstatus.setText("User was last seen at: "+time);
+
+
+                Log.e("long",time + "  "+lati +"  "+longi);
+                LatLng point = new LatLng();
+                point.setLatitude(Double.parseDouble(lati));
+                point.setLongitude(Double.parseDouble(longi));
+
+
+                if (animator != null && animator.isStarted()) {
+                    currentPosition = (LatLng) animator.getAnimatedValue();
+                    animator.cancel();
+                }
+
+                animator = ObjectAnimator
+                        .ofObject(latLngEvaluator, currentPosition, point)
+                        .setDuration(2000);
+                animator.addUpdateListener(animatorUpdateListener);
+                animator.start();
+
+                currentPosition = point;
+
+                if(init ==  0){
+                    if(mapbox!=null){
+                        animateCamera();
+                    }
+                }
+                init++;
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -292,4 +301,15 @@ public class DirectionsActivity extends AppCompatActivity {
             return latLng;
         }
     };
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+
+
+
 }

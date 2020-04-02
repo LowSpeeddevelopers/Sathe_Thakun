@@ -119,7 +119,11 @@ public class ForegroundService extends Service implements GetLocation {
                             openLocation.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
+
+
                                     Intent i = new Intent(getApplicationContext(),DirectionsActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     i.putExtra("userid",model.getUserID());
                                     startActivity(i);
                                     dialog.dismiss();
