@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -106,7 +107,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private LatLng currentPosition = new LatLng(64.900932, -18.167040);
 
     private static GeoJsonSource geoJsonSource;
-    private ValueAnimator animator;
+    private static ValueAnimator animator;
     int init = 0;
 
     @Override
@@ -195,29 +196,32 @@ public class DirectionsActivity extends AppCompatActivity {
                 point.setLongitude(Double.parseDouble(longi));
 
 
-                if (animator != null && animator.isStarted()) {
-                    currentPosition = (LatLng) animator.getAnimatedValue();
-                    animator.cancel();
-                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (animator != null && animator.isStarted()) {
+                            currentPosition = (LatLng) animator.getAnimatedValue();
+                            animator.cancel();
+                        }
 
-                animator = ObjectAnimator
-                        .ofObject(latLngEvaluator, currentPosition, point)
-                        .setDuration(2000);
-                animator.addUpdateListener(animatorUpdateListener);
+                        animator = ObjectAnimator
+                                .ofObject(latLngEvaluator, currentPosition, point)
+                                .setDuration(2000);
+                        animator.addUpdateListener(animatorUpdateListener);
 
 
-                    animator.start();
+                        animator.start();
 
+                        currentPosition = point;
 
+                        if(init ==  0){
 
-                currentPosition = point;
+                            animateCamera();
 
-                if(init ==  0){
-
-                        animateCamera();
-
-                }
-                init++;
+                        }
+                        init++;
+                    }
+                },1000);
 
 
 
