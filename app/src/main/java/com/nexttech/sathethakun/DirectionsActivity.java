@@ -101,6 +101,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private static final float LINE_WIDTH = 6f;
     private static final String ORIGIN_COLOR = "#2096F3";
     private static final String DESTINATION_COLOR = "#F84D4D";
+    boolean b= false;
 
 
 
@@ -139,6 +140,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 mapbox = mapboxMap;
                 geoJsonSource = new GeoJsonSource("source-id",
                         Feature.fromGeometry(ORIGIN_POINT));
+                b=true;
 
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
