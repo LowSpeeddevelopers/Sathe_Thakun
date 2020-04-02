@@ -112,6 +112,9 @@ public class ForegroundService extends Service implements GetLocation {
                                     String phone = model.getPhone();
                                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                                     startActivity(intent);
+                                    if(r.isPlaying()){
+                                        r.stop();
+                                    }
                                     dialog.dismiss();
 
                                 }
@@ -126,6 +129,9 @@ public class ForegroundService extends Service implements GetLocation {
                                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     i.putExtra("userid",model.getUserID());
                                     startActivity(i);
+                                    if(r.isPlaying()){
+                                        r.stop();
+                                    }
                                     dialog.dismiss();
                                 }
                             });
