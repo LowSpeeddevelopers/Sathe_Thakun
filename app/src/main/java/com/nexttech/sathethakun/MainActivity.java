@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null ) {
 
             if(context instanceof MainActivity){
+                ((MainActivity)context).fetchAlertData();
                 ((MainActivity)context).RetriveUserData();
                 ((MainActivity)context).getConnectedUserCount();
                 ((MainActivity)context).getRequestUserCount();
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         fUser = mAuth.getCurrentUser();
         updateUI(fUser,this);
         openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
-        fetchAlertData();
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -204,14 +204,18 @@ public class DirectionsActivity extends AppCompatActivity {
                         .ofObject(latLngEvaluator, currentPosition, point)
                         .setDuration(2000);
                 animator.addUpdateListener(animatorUpdateListener);
-                animator.start();
+
+
+                    animator.start();
+
+
 
                 currentPosition = point;
 
                 if(init ==  0){
-                    if(mapbox!=null){
+
                         animateCamera();
-                    }
+
                 }
                 init++;
 
