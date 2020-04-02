@@ -95,7 +95,12 @@ public class ForegroundService extends Service implements GetLocation {
                     TextView openLocation = VI.findViewById(R.id.openlocation);
                     builder.setCancelable(false);
                     dialog = builder.create();
-                    dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    if(Build.VERSION.SDK_INT<26){
+                        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    }else {
+                        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                    }
+
 
                     DatabaseReference tenoref = FirebaseDatabase.getInstance().getReference().child("Users").child(dataSnapshot.getKey());
 
