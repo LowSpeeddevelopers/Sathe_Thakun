@@ -179,7 +179,7 @@
                 android:layout_height="@dimen/_140sdp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@color/color_actionbar">
+                android:background="@color/colorPrimary">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_profile_pic"
                     android:layout_width="@dimen/_75sdp"
@@ -217,6 +217,35 @@
                         android:layout_margin="@dimen/_8sdp"
                         app:cardElevation="@dimen/_5sdp"
                         app:cardCornerRadius="@dimen/_5sdp"
+                        android:id="@+id/button_home">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10sdp"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/ic_home"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:text="Home"
+                                android:textColor="#000"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
                         android:id="@+id/button_profile">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -226,7 +255,7 @@
                             <ImageView
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/profile_pic"
+                                android:src="@drawable/ic_profile"
                                 android:layout_gravity="center" />
 
                             <TextView
@@ -266,62 +295,6 @@
                                 android:text="About"
                                 android:textColor="#000"
                                 android:textSize="18sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
-                        app:cardElevation="@dimen/_5sdp"
-                        app:cardCornerRadius="@dimen/_5sdp"
-                        android:id="@+id/button_notification">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/_10sdp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/notification"
-                                android:layout_gravity="center" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:textColor="#000"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:text="Notification"/>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
-                        app:cardElevation="@dimen/_5sdp"
-                        app:cardCornerRadius="@dimen/_5sdp"
-                        android:id="@+id/button_privacy">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/_10sdp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/settings"
-                                android:layout_gravity="center" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:textColor="#000"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:text="Settings"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 

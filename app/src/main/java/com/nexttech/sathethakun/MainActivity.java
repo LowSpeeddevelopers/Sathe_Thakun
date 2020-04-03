@@ -3,9 +3,12 @@ package com.nexttech.sathethakun;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    CardView btnProfile, btnAbout, btnNotification, btnLogout , btnHelp, btnPrivacyPolicy;
+    CardView btnHome, btnProfile, btnAbout, btnLogout, btnHelp, btnPrivacyPolicy;
 
     TextView userName, userPhone;
     CircleImageView ivProfilePic;
@@ -87,11 +91,27 @@ public class MainActivity extends AppCompatActivity {
 
     boolean alert = false;
 
+    AlertDialog.Builder builder;
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        //startActivity(new Intent(this,DirectionsActivity.class));
+        if (!hasConnection()){
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please check your internet connection.") .setTitle("No Internet");
+            builder.setMessage("Please check your internet connection.")
+                    .setCancelable(false)
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.setTitle("No Internet");
+            alert.show();
+        }
+
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser,this);
@@ -139,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         userPhone = findViewById(R.id.tv_user_phone);
         ivProfilePic = findViewById(R.id.iv_profile_pic);
         progressBar = findViewById(R.id.progress_bar);
+        btnHome = findViewById(R.id.button_home);
         btnProfile = findViewById(R.id.button_profile);
         btnAbout = findViewById(R.id.button_about);
-        btnNotification = findViewById(R.id.button_notification);
         btnLogout = findViewById(R.id.button_logout);
         btnHelp=findViewById(R.id.button_help);
         btnPrivacyPolicy = findViewById(R.id.button_privacy_policy);
@@ -153,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         requestCount = bottomNavigation.findViewById(R.id.request_count);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+
         fUser = mAuth.getCurrentUser();
         updateUI(fUser,this);
         openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
@@ -201,6 +222,12 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(getSupportFragmentManager().beginTransaction(), new RequestUsersFragment(), "Requests", false);
             }
         });
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
+            }
+        });
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,13 +240,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Fragment fragment = new ContactFragment();
                 openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Contact Us", false);
-            }
-        });
-        btnNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, NotificationActivity.class);
-                startActivity(i);
             }
         });
         btnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
@@ -426,5 +446,22 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void progressBarGone(){
         progressBar.setVisibility(View.GONE);
+    }
+
+    public boolean hasConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetwork != null && wifiNetwork.isConnected()) {
+            return true;
+        }
+        NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mobileNetwork != null && mobileNetwork.isConnected()) {
+            return true;
+        }
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }

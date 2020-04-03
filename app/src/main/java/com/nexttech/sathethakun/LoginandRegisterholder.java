@@ -2,8 +2,12 @@ package com.nexttech.sathethakun;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +18,28 @@ import com.nexttech.sathethakun.Fragments.LoginFragment;
 public class LoginandRegisterholder extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+
+    AlertDialog.Builder builder;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!hasConnection()) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please check your internet connection.").setTitle("No Internet");
+            builder.setMessage("Please check your internet connection.")
+                    .setCancelable(false)
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.setTitle("No Internet");
+            alert.show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +67,22 @@ public class LoginandRegisterholder extends AppCompatActivity {
             updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(LoginandRegisterholder.this),"login");
         }
 
+    }
 
+    public boolean hasConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetwork != null && wifiNetwork.isConnected()) {
+            return true;
+        }
+        NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mobileNetwork != null && mobileNetwork.isConnected()) {
+            return true;
+        }
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }

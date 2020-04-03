@@ -1,15 +1,10 @@
 package com.nexttech.sathethakun;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,24 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.api.directions.v5.MapboxDirections;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.constants.MapboxConstants;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -47,17 +38,9 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
-
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import timber.log.Timber;
+import com.nexttech.sathethakun.Model.UserModel;
 
 import static android.graphics.Color.parseColor;
-import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.color;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
@@ -71,7 +54,6 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacem
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineGradient;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
@@ -81,10 +63,10 @@ public class DirectionsActivity extends AppCompatActivity {
 
     MapView mapView;
     MapboxMap mapbox;
-    DatabaseReference reference;
-    TextView seenstatus;
+    DatabaseReference reference, ref;
+    TextView seenstatus, tvUserName;
 
-    ImageView reset;
+    ImageView reset, navBack;
 
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
     private static final String DESTINATION_ICON_ID = "destination-icon-id";
@@ -118,8 +100,11 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
         Intent intent = getIntent();
         String userid = intent.getStringExtra("userid");
+        mapView = findViewById(R.id.mapView);
         seenstatus = findViewById(R.id.seenstatus);
         reset = findViewById(R.id.reset);
+        tvUserName = findViewById(R.id.tv_user_name);
+        navBack = findViewById(R.id.nav_back);
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,10 +113,28 @@ public class DirectionsActivity extends AppCompatActivity {
             }
         });
 
+        navBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
+        ref = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
 
-        mapView = findViewById(R.id.mapView);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserModel model = dataSnapshot.getValue(UserModel.class);
 
+                tvUserName.setText(model.getName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -189,7 +192,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 String time = dataSnapshot.child("time").getValue().toString();
                 String lati = dataSnapshot.child("latitude").getValue().toString();
                 String longi = dataSnapshot.child("longitude").getValue().toString();
-                seenstatus.setText("User was last seen at: "+time);
+                seenstatus.setText("Last update at: "+time);
 
 
                 Log.e("long",time + "  "+lati +"  "+longi);
@@ -294,6 +297,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
                     LatLng animatedPosition = (LatLng) valueAnimator.getAnimatedValue();
+
                     geoJsonSource.setGeoJson(Point.fromLngLat(animatedPosition.getLongitude(), animatedPosition.getLatitude()));
                 }
             };
@@ -318,8 +322,5 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-
-
 
 }

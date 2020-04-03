@@ -37,7 +37,7 @@
                         android:layout_height="@dimen/_100sdp"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
-                        android:src="@drawable/profile_pic"
+                        android:src="@mipmap/ic_launcher"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.497"
