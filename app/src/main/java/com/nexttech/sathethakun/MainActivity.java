@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
                 finish();
+                stopService();
             }
         });
     }
