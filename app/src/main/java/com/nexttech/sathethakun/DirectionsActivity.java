@@ -83,8 +83,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private static final float LINE_WIDTH = 6f;
     private static final String ORIGIN_COLOR = "#2096F3";
     private static final String DESTINATION_COLOR = "#F84D4D";
-    boolean b= false;
-
+    boolean b = false;
 
 
     private LatLng currentPosition = new LatLng(64.900932, -18.167040);
@@ -143,7 +142,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 mapbox = mapboxMap;
                 geoJsonSource = new GeoJsonSource("source-id",
                         Feature.fromGeometry(ORIGIN_POINT));
-                b=true;
+                b = true;
 
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
@@ -154,7 +153,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
 
                         animateCamera();
-
 
 
                         style.addImage(("marker_icon"), BitmapFactory.decodeResource(
@@ -168,13 +166,6 @@ public class DirectionsActivity extends AppCompatActivity {
                                         PropertyFactory.iconIgnorePlacement(true),
                                         PropertyFactory.iconAllowOverlap(true)
                                 ));
-
-                        Toast.makeText(
-                                DirectionsActivity.this,
-                                "balsal",
-                                Toast.LENGTH_LONG
-                        ).show();
-
                     }
                 });
             }
@@ -187,15 +178,15 @@ public class DirectionsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Toast.makeText(DirectionsActivity.this, "data changed", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(DirectionsActivity.this, "data changed", Toast.LENGTH_SHORT).show();
 
                 String time = dataSnapshot.child("time").getValue().toString();
                 String lati = dataSnapshot.child("latitude").getValue().toString();
                 String longi = dataSnapshot.child("longitude").getValue().toString();
-                seenstatus.setText("Last update at: "+time);
+                seenstatus.setText("Last update at: " + time);
 
 
-                Log.e("long",time + "  "+lati +"  "+longi);
+                Log.e("long", time + "  " + lati + "  " + longi);
                 LatLng point = new LatLng();
                 point.setLatitude(Double.parseDouble(lati));
                 point.setLongitude(Double.parseDouble(longi));
@@ -219,15 +210,14 @@ public class DirectionsActivity extends AppCompatActivity {
 
                         currentPosition = point;
 
-                        if(init ==  0){
+                        if (init == 0) {
 
                             animateCamera();
 
                         }
                         init++;
                     }
-                },1000);
-
+                }, 1000);
 
 
             }
@@ -240,8 +230,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
 
-
-    private void animateCamera(){
+    private void animateCamera() {
         CameraPosition position = new CameraPosition.Builder()
                 .target(new LatLng(currentPosition.getLatitude(), currentPosition.getLongitude())) // Sets the new camera position
                 .zoom(14) // Sets the zoom
@@ -278,6 +267,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 iconAllowOverlap(true),
                 iconOffset(new Float[]{0f, -4f})));
     }
+
     private void initSources(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addSource(new GeoJsonSource(ROUTE_LINE_SOURCE_ID, new GeoJsonOptions().withLineMetrics(true)));
         loadedMapStyle.addSource(new GeoJsonSource(ICON_SOURCE_ID, getOriginAndDestinationFeatureCollection()));

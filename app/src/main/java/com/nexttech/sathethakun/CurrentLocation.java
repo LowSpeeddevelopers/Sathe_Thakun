@@ -59,9 +59,9 @@ public class CurrentLocation implements LocationListener {
             if (location != null)
                 onLocationChanged(location);
             else {
-
+                 Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
             }
-            // Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
+
 
         } else {
             Toast.makeText(context, "No Provider Found or Permission Not Granted!", Toast.LENGTH_SHORT).show();
@@ -96,12 +96,12 @@ public class CurrentLocation implements LocationListener {
         Log.e("onProviderDisabled", "==" + s);
         getLocation.onProviderDisabled(s);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("this is a dialog box ");
+        alertDialog.setTitle("Worning Message");
         alertDialog.setPositiveButton("Allow", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-                Toast.makeText(context, "ok ive wrote this 'ok' here", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 context.startActivity(myIntent);
                 dialog.dismiss();
@@ -111,7 +111,7 @@ public class CurrentLocation implements LocationListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-                Toast.makeText(context, "cancel ' comment same as ok'", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Permission Refused", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

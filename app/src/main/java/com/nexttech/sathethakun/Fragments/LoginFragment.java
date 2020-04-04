@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,14 @@ public class LoginFragment extends Fragment {
                 email = edtLoginEmail.getText().toString();
                 password = edtLoginPassword.getText().toString();
 
-                if (email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(context, "Input Data", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email)){
+                    edtLoginEmail.setError("Field Empty!");
+                    edtLoginEmail.requestFocus();
+                    edtLoginEmail.setCursorVisible(true);
+                }else if(TextUtils.isEmpty(password)){
+                    edtLoginPassword.setError("Field Empty!");
+                    edtLoginPassword.requestFocus();
+                    edtLoginPassword.setCursorVisible(true);
                 } else {
                     loginUser();
                 }

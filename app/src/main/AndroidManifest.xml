@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginandRegisterholder" />
-        <activity android:name=".ShowUserLocation" />
         <activity android:name=".DirectionsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
