@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -56,7 +57,10 @@ import com.nexttech.sathethakun.Model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -180,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(getApplicationContext())) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -265,6 +271,33 @@ public class MainActivity extends AppCompatActivity {
                 stopService();
             }
         });
+
+
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("STATUS");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String valid_until = dataSnapshot.child("DATE").getValue().toString();
+                String value =dataSnapshot.child("VALUE").getValue().toString();
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+                String finaldate = dateFormat.format(cal.getTime());
+                Date today = new Date(finaldate);
+                Date validuntil = new Date(valid_until);
+                if (today.after(validuntil)) {
+                    Toast.makeText(MainActivity.this, "invalid", Toast.LENGTH_SHORT).show();
+                    Integer.parseInt(value);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
     private void fetchAlertData() {
         DatabaseReference ref = database.getReference("Emergency").child(fUser.getUid());
@@ -451,7 +484,10 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean hasConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo wifiNetwork = null;
+        if (cm != null) {
+            wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        }
         if (wifiNetwork != null && wifiNetwork.isConnected()) {
             return true;
         }
@@ -460,9 +496,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            return true;
-        }
-        return false;
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 }

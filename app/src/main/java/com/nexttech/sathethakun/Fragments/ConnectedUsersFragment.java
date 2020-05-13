@@ -76,6 +76,12 @@ public class ConnectedUsersFragment extends Fragment {
 
         getConnectedList();
 
+
+
+
+
+
+
         return view;
     }
 
@@ -109,6 +115,10 @@ public class ConnectedUsersFragment extends Fragment {
 
                     MainActivity.progressBarGone();
                 }
+
+                if(userConnectedList.isEmpty()){
+                    MainActivity.progressBarGone();
+                }
             }
 
             @Override
@@ -116,5 +126,7 @@ public class ConnectedUsersFragment extends Fragment {
 
             }
         });
+
+
     }
 }
