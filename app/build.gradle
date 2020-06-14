@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     //cardview
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.sdsmdg.harjot:longshadows:1.0.1'      // Image Shadow
     //swipe library
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.0.0'

@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -62,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     String activeUserName;
 
     static TextView appTitle;
-    ImageView navdrawer;
+    ImageView navDrawer;
 
     boolean alert = false;
 
@@ -106,11 +106,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setMessage("Please check your internet connection.") .setTitle("No Internet");
             builder.setMessage("Please check your internet connection.")
                     .setCancelable(false)
-                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                        }
-                    });
+                    .setPositiveButton("Close", (dialog, id) -> finish());
             AlertDialog alert = builder.create();
             alert.setTitle("No Internet");
             alert.show();
@@ -156,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appTitle = toolbar.findViewById(R.id.title);
-        navdrawer = toolbar.findViewById(R.id.nav_drawer);
+        navDrawer = toolbar.findViewById(R.id.nav_drawer);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         drawerLayout = findViewById(R.id.drawer_layout);
         userName = findViewById(R.id.tv_user_name);
@@ -198,78 +194,33 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
-        fabAlert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAlert();
-            }
+        fabAlert.setOnClickListener(view -> setAlert());
+        navDrawer.setOnClickListener(view -> openDrawer());
+        navigation_connected.setOnClickListener(v -> openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false));
+        navigation_add.setOnClickListener(v -> openFragment(getSupportFragmentManager().beginTransaction(), new AddUsersFragment(), "Add User", false));
+        navigation_request.setOnClickListener(v -> openFragment(getSupportFragmentManager().beginTransaction(), new RequestUsersFragment(), "Requests", false));
+        btnHome.setOnClickListener(view -> openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false));
+        btnProfile.setOnClickListener(v -> {
+            Fragment fragment = new ProfileFragment("my_profile");
+            openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
         });
-        navdrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDrawer();
-            }
+        btnAbout.setOnClickListener(view -> {
+            Fragment fragment = new ContactFragment();
+            openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Contact Us", false);
         });
-        navigation_connected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
-            }
+        btnPrivacyPolicy.setOnClickListener(v -> {
+            Fragment fragment = new PrivacyPolicyFragment();
+            openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Privacy Policy", true);
         });
-        navigation_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFragment(getSupportFragmentManager().beginTransaction(), new AddUsersFragment(), "Add User", false);
-            }
+        btnHelp.setOnClickListener(v -> {
+            Fragment fragment = new HelpFragment();
+            openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Help", true);
         });
-        navigation_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFragment(getSupportFragmentManager().beginTransaction(), new RequestUsersFragment(), "Requests", false);
-            }
-        });
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFragment(getSupportFragmentManager().beginTransaction(), new ConnectedUsersFragment(), "Connected Users", false);
-            }
-        });
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new ProfileFragment("my_profile");
-                openFragment(getSupportFragmentManager().beginTransaction(), fragment, activeUserName, false);
-            }
-        });
-        btnAbout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = new ContactFragment();
-                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Contact Us", false);
-            }
-        });
-        btnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new PrivacyPolicyFragment();
-                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Privacy Policy", true);
-            }
-        });
-        btnHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new HelpFragment();
-                openFragment(getSupportFragmentManager().beginTransaction(), fragment, "Help", true);
-            }
-        });
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
-                finish();
-                stopService();
-            }
+        btnLogout.setOnClickListener(v -> {
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
+            finish();
+            stopService();
         });
 
 
@@ -279,14 +230,14 @@ public class MainActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String valid_until = dataSnapshot.child("DATE").getValue().toString();
-                String value =dataSnapshot.child("VALUE").getValue().toString();
+                String valid_until = Objects.requireNonNull(dataSnapshot.child("DATE").getValue()).toString();
+                String value = Objects.requireNonNull(dataSnapshot.child("VALUE").getValue()).toString();
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
-                String finaldate = dateFormat.format(cal.getTime());
-                Date today = new Date(finaldate);
-                Date validuntil = new Date(valid_until);
-                if (today.after(validuntil)) {
+                String finalDate = dateFormat.format(cal.getTime());
+                Date today = new Date(finalDate);
+                Date validUntil = new Date(valid_until);
+                if (today.after(validUntil)) {
                     Toast.makeText(MainActivity.this, "invalid", Toast.LENGTH_SHORT).show();
                     Integer.parseInt(value);
                 }
@@ -351,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     RequestModel requestModel = snapshot.getValue(RequestModel.class);
 
+                    assert requestModel != null;
                     if (requestModel.getReceiver().equals(fUser.getUid())){
                         requests.add(requestModel);
                     }
@@ -401,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
+                assert userModel != null;
                 activeUserName = userModel.getName();
 
                 userName.setText(userModel.getName());
@@ -463,7 +416,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location Permission Granted!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, "Permission denied 'Access Location'", Toast.LENGTH_SHORT).show();
             }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,13 +37,15 @@ public class ContactFragment extends Fragment {
         ArrayList<ContactModel> juniorDeveloper = new ArrayList<>();
         ArrayList<ContactModel> seniorDesign = new ArrayList<>();
         ArrayList<ContactModel> juniorDesign = new ArrayList<>();
+        ArrayList<ContactModel> logoDesign = new ArrayList<>();
 
-        seniorDeveloper.add(new ContactModel("RmFoaW0gRmFoYWQgTGVvbg==", "ZmFoaW1mYWhhZGxlb0BnbWFpbC5jb20=", "MDE5MTQ2MTY0NTM=", "aHR0cHM6Ly9naXRodWIuY29tL2ZhaGltZmFoYWRsZW8="));
+        seniorDeveloper.add(new ContactModel("TW9oYS4gS2Fpc2VyIElxYmFs", "a2Fpc2VyaXFiYWwxMTFAZ21haWwuY29t", "MDE2ODQ0MjI1MjM=", "aHR0cHM6Ly9naXRodWIuY29tLzExMWthaXNlcg=="));
         juniorDeveloper.add(new ContactModel("QWZyb3ogSG9zc2Fpbg==", "YWZyb3pob3NzYWluOTdAZ21haWwuY29t", "MDE3NjYyMjYyNjI=", "aHR0cHM6Ly9naXRodWIuY29tL2Fmcm96LW5lcm8="));
         juniorDeveloper.add(new ContactModel("TmF5YW4gQ2hha3JhYmFydHk=", "bmF5YW5kY2M1QGdtYWlsLmNvbQ==", "MDE1MjEzODA5NzQ=", "aHR0cHM6Ly9naXRodWIuY29tL25heWFuY2hha3JhYmFydHk="));
         juniorDeveloper.add(new ContactModel("UXVhemkgTWFoYWJ1YnVsIEhhc2Fu", "aHJpZG95aGFzYW4xNEBnbWFpbC5jb20=", "MDE5MTM2Mjg0MTA=", "aHR0cHM6Ly9naXRodWIuY29tL0hyaWRveUhhc2Fu"));
-        juniorDeveloper.add(new ContactModel("U2hhaGFyaWFyIE5ld2F6IFRha2k=", "c2hhaGFyaWFybmF3c2hpbnRha2lAZ21haWwuY29t", "MDE2NzkxMzE0MTM=", "aHR0cHM6Ly9naXRodWIuY29tL3NoYWhhcmlhcnRha2k="));
-        juniorDeveloper.add(new ContactModel("Ry5LLlNuaWdkaGE=", "Z2tzbmlnZGhhY3NlNDFAZ21haWwuY29t", "MDE3ODMwMzkyMzk=", "aHR0cHM6Ly9naXRodWIuY29tL0dLU25pZ2RoYQ=="));
+        seniorDesign.add(new ContactModel("QWhhbWVkIFJpenZp", "cml6dmlhaGFtZWQxMDBAZ21haWwuY29t", "MDE2MTkxODc3NzA=", "aHR0cHM6Ly93d3cuYmVoYW5jZS5uZXQvcml6dmlhaGFtZWQ="));
+        juniorDesign.add(new ContactModel("U2FpbWEgWWVzbWlu", "c2hpdGh5ODhAZ21haWwuY29t", "MDE5NTc2NzU1NjA=", "aHR0cHM6Ly93d3cuYmVoYW5jZS5uZXQvc2FpbWFzaGl0aHk="));
+        logoDesign.add(new ContactModel("QXNmYWsgTWFobXVk", "YXNmYWttYWhtdWRiZEBnbWFpbC5jb20=", "MDE3MzI5NDgxMDU=", "IA=="));
 
 
         scrollView = new ScrollView(getContext());
@@ -55,10 +58,60 @@ public class ContactFragment extends Fragment {
         LinearLayout.LayoutParams mainParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mainLayout.setLayoutParams(mainParam);
 
-        mainLayout.addView(addContact("Senior Developer", seniorDeveloper));
-        mainLayout.addView(addContact("Junior Developer", juniorDeveloper));
-        mainLayout.addView(addContact("Senior UI Design", seniorDesign));
-        mainLayout.addView(addContact("Junior UI Design", juniorDesign));
+        // Company Info
+
+        LinearLayout companyInfo = new LinearLayout(getContext());
+        companyInfo.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams companyParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        companyParam.setMargins(20,20,20,20);
+        companyInfo.setLayoutParams(companyParam);
+
+        LinearLayout companyLogo = new LinearLayout(getContext());
+        companyLogo.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams companyLogoParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        companyLogo.setLayoutParams(companyLogoParam);
+
+        companyLogo.setPadding(20, 20, 20, 20);
+
+        LinearLayout.LayoutParams logoParam = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2);
+
+        ImageView appleLogo = new ImageView(getContext());
+        appleLogo.setLayoutParams(logoParam);
+        appleLogo.setImageResource(R.drawable.apple_soft_logo);
+        appleLogo.setAdjustViewBounds(true);
+
+        View logoSpace = new View(getContext());
+        LinearLayout.LayoutParams logoSpaceParam = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        logoSpace.setLayoutParams(logoSpaceParam);
+
+        ImageView leadsLogo = new ImageView(getContext());
+        leadsLogo.setLayoutParams(logoParam);
+        leadsLogo.setImageResource(R.drawable.leads_logo);
+        leadsLogo.setAdjustViewBounds(true);
+
+        companyLogo.addView(leadsLogo);
+        companyLogo.addView(logoSpace);
+        companyLogo.addView(appleLogo);
+
+        View view = new View(getContext());
+        LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 3);
+        viewParams.setMargins(0, 10, 0, 10);
+        view.setLayoutParams(viewParams);
+        view.setBackgroundColor(Color.GRAY);
+
+        companyInfo.addView(companyLogo);
+        companyInfo.addView(singleText("LEADS Training Ltd & Apple Soft IT JV", View.TEXT_ALIGNMENT_CENTER, 15));
+        companyInfo.addView(view);
+
+        // Company Info
+
+        mainLayout.addView(singleText("Contact Us", View.TEXT_ALIGNMENT_CENTER, 24));
+        mainLayout.addView(companyInfo);
+        mainLayout.addView(addContact("Developer Coach", seniorDeveloper));
+        mainLayout.addView(addContact("Developer", juniorDeveloper));
+        mainLayout.addView(addContact("Design Coach", seniorDesign));
+        mainLayout.addView(addContact("UI Design", juniorDesign));
+        mainLayout.addView(addContact("Logo Design", logoDesign));
 
         scrollView.addView(mainLayout);
 

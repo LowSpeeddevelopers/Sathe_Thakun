@@ -292,7 +292,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:text="About"
+                                android:text="Contact Us"
                                 android:textColor="#000"
                                 android:textSize="18sp" />
                         </LinearLayout>
