@@ -26,8 +26,6 @@ public class HelpFragment extends Fragment {
 
     private Context context;
     private ExpandableListView list_view;
-    private List<String> listDataGroup;
-    private HashMap<String, List<String>> listDataChild;
 
     public HelpFragment() {
         // Required empty public constructor
@@ -61,15 +59,12 @@ public class HelpFragment extends Fragment {
         });
 
 
-        list_view.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-
-            return false;
-        });
+        list_view.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
     }
 
     private void createListData() {
-        listDataGroup = new ArrayList<>();
-        listDataChild = new HashMap<>();
+        List<String> listDataGroup = new ArrayList<>();
+        HashMap<String, List<String>> listDataChild = new HashMap<>();
 
         // Adding group data
         listDataGroup.add("How can I Registration New Account");

@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nexttech.sathethakun.Fragments.LoginFragment;
 
-public class LoginandRegisterholder extends AppCompatActivity {
+public class LoginAndRegisterHolder extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
@@ -30,11 +30,7 @@ public class LoginandRegisterholder extends AppCompatActivity {
             builder.setMessage("Please check your internet connection.").setTitle("No Internet");
             builder.setMessage("Please check your internet connection.")
                     .setCancelable(false)
-                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                        }
-                    });
+                    .setPositiveButton("Close", (dialog, id) -> finish());
             AlertDialog alert = builder.create();
             alert.setTitle("No Internet");
             alert.show();
@@ -64,13 +60,14 @@ public class LoginandRegisterholder extends AppCompatActivity {
         if(test!=null && test.isVisible()){
             super.onBackPressed();
         }else {
-            updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(LoginandRegisterholder.this),"login");
+            updateFragment(getSupportFragmentManager().beginTransaction(),new LoginFragment(LoginAndRegisterHolder.this),"login");
         }
 
     }
 
     public boolean hasConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiNetwork != null && wifiNetwork.isConnected()) {
             return true;
@@ -80,9 +77,6 @@ public class LoginandRegisterholder extends AppCompatActivity {
             return true;
         }
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            return true;
-        }
-        return false;
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 }

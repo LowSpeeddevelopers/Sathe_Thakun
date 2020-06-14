@@ -12,6 +12,7 @@ import com.nexttech.sathethakun.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class HelpExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -30,7 +31,7 @@ public class HelpExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return Objects.requireNonNull(this._listDataChild.get(this._listDataHeader.get(groupPosition)))
                 .get(childPosititon);
     }
 
@@ -47,6 +48,7 @@ public class HelpExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert infalInflater != null;
             convertView = infalInflater.inflate(R.layout.help_item_child, null);
         }
 
@@ -58,7 +60,7 @@ public class HelpExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return Objects.requireNonNull(this._listDataChild.get(this._listDataHeader.get(groupPosition)))
                 .size();
     }
 
@@ -84,6 +86,7 @@ public class HelpExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert infalInflater != null;
             convertView = infalInflater.inflate(R.layout.help_item_group, null);
         }
 

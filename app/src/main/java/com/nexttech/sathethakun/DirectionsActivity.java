@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,9 +61,9 @@ public class DirectionsActivity extends AppCompatActivity {
 
 
     MapView mapView;
-    MapboxMap mapbox;
+    MapboxMap mapBox;
     DatabaseReference reference, ref;
-    TextView seenstatus, tvUserName;
+    TextView seenStatus, tvUserName;
 
     ImageView reset, navBack;
 
@@ -100,25 +99,16 @@ public class DirectionsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userid = intent.getStringExtra("userid");
         mapView = findViewById(R.id.mapView);
-        seenstatus = findViewById(R.id.seenstatus);
+        seenStatus = findViewById(R.id.seenstatus);
         reset = findViewById(R.id.reset);
         tvUserName = findViewById(R.id.tv_user_name);
         navBack = findViewById(R.id.nav_back);
 
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animateCamera();
-            }
-        });
+        reset.setOnClickListener(v -> animateCamera());
 
-        navBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        navBack.setOnClickListener(view -> onBackPressed());
 
+        assert userid != null;
         ref = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,6 +116,7 @@ public class DirectionsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel model = dataSnapshot.getValue(UserModel.class);
 
+                assert model != null;
                 tvUserName.setText(model.getName());
             }
 
@@ -136,39 +127,33 @@ public class DirectionsActivity extends AppCompatActivity {
         });
 
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                mapbox = mapboxMap;
-                geoJsonSource = new GeoJsonSource("source-id",
-                        Feature.fromGeometry(ORIGIN_POINT));
-                b = true;
+        mapView.getMapAsync(mapboxMap -> {
+            mapBox = mapboxMap;
+            geoJsonSource = new GeoJsonSource("source-id",
+                    Feature.fromGeometry(ORIGIN_POINT));
+            b = true;
 
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
+            mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> {
 
-                        initSources(style);
-                        initLayers(style);
+                initSources(style);
+                initLayers(style);
 
 
-                        animateCamera();
+                animateCamera();
 
 
-                        style.addImage(("marker_icon"), BitmapFactory.decodeResource(
-                                getResources(), R.drawable.red_marker));
+                style.addImage(("marker_icon"), BitmapFactory.decodeResource(
+                        getResources(), R.drawable.red_marker));
 
-                        style.addSource(geoJsonSource);
+                style.addSource(geoJsonSource);
 
-                        style.addLayer(new SymbolLayer("layer-id", "source-id")
-                                .withProperties(
-                                        PropertyFactory.iconImage("marker_icon"),
-                                        PropertyFactory.iconIgnorePlacement(true),
-                                        PropertyFactory.iconAllowOverlap(true)
-                                ));
-                    }
-                });
-            }
+                style.addLayer(new SymbolLayer("layer-id", "source-id")
+                        .withProperties(
+                                PropertyFactory.iconImage("marker_icon"),
+                                PropertyFactory.iconIgnorePlacement(true),
+                                PropertyFactory.iconAllowOverlap(true)
+                        ));
+            });
         });
 
 
@@ -183,7 +168,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 String time = dataSnapshot.child("time").getValue().toString();
                 String lati = dataSnapshot.child("latitude").getValue().toString();
                 String longi = dataSnapshot.child("longitude").getValue().toString();
-                seenstatus.setText("Last update at: " + time);
+                seenStatus.setText("Last update at: " + time);
 
 
                 Log.e("long", time + "  " + lati + "  " + longi);
@@ -192,31 +177,28 @@ public class DirectionsActivity extends AppCompatActivity {
                 point.setLongitude(Double.parseDouble(longi));
 
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (animator != null && animator.isStarted()) {
-                            currentPosition = (LatLng) animator.getAnimatedValue();
-                            animator.cancel();
-                        }
-
-                        animator = ObjectAnimator
-                                .ofObject(latLngEvaluator, currentPosition, point)
-                                .setDuration(2000);
-                        animator.addUpdateListener(animatorUpdateListener);
-
-
-                        animator.start();
-
-                        currentPosition = point;
-
-                        if (init == 0) {
-
-                            animateCamera();
-
-                        }
-                        init++;
+                new Handler().postDelayed(() -> {
+                    if (animator != null && animator.isStarted()) {
+                        currentPosition = (LatLng) animator.getAnimatedValue();
+                        animator.cancel();
                     }
+
+                    animator = ObjectAnimator
+                            .ofObject(latLngEvaluator, currentPosition, point)
+                            .setDuration(2000);
+                    animator.addUpdateListener(animatorUpdateListener);
+
+
+                    animator.start();
+
+                    currentPosition = point;
+
+                    if (init == 0) {
+
+                        animateCamera();
+
+                    }
+                    init++;
                 }, 1000);
 
 
@@ -238,7 +220,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 .tilt(30) // Set the camera tilt
                 .build(); // Creates a CameraPosition from the builder
 
-        mapbox.animateCamera(CameraUpdateFactory
+        mapBox.animateCamera(CameraUpdateFactory
                 .newCameraPosition(position), 7000);
     }
 

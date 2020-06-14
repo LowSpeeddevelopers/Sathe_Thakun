@@ -1,16 +1,15 @@
 package com.nexttech.sathethakun.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,9 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nexttech.sathethakun.Adapter.ConnectedAdapter;
-import com.nexttech.sathethakun.Adapter.RequestAdapter;
 import com.nexttech.sathethakun.MainActivity;
-import com.nexttech.sathethakun.Model.RequestModel;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
 
@@ -36,11 +33,9 @@ public class ConnectedUsersFragment extends Fragment {
 
     private List<UserModel> userConnectedList;
 
-    private RecyclerView rvConnectedUsers;
     private ConnectedAdapter mAdapter;
 
     private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
 
     String myUid;
 
@@ -56,9 +51,9 @@ public class ConnectedUsersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_connected_users, container, false);
 
-        rvConnectedUsers = view.findViewById(R.id.rv_connected_users);
+        RecyclerView rvConnectedUsers = view.findViewById(R.id.rv_connected_users);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         myUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -73,14 +68,7 @@ public class ConnectedUsersFragment extends Fragment {
         mAdapter = new ConnectedAdapter(getContext(), userConnectedList);
         rvConnectedUsers.setAdapter(mAdapter);
 
-
         getConnectedList();
-
-
-
-
-
-
 
         return view;
     }
@@ -95,6 +83,7 @@ public class ConnectedUsersFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String id = snapshot.getValue(String.class);
 
+                    assert id != null;
                     DatabaseReference myRef2 = database.getReference("Users").child(id);
 
                     myRef2.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -24,12 +24,9 @@ public class SplashActivity extends AppCompatActivity {
 
         splashLogo = findViewById(R.id.splash_logo);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
         },5000);
 
         Animation myanim = AnimationUtils.loadAnimation(this,R.anim.splash_animation);

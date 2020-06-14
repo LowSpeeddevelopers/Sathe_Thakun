@@ -1,32 +1,24 @@
 package com.nexttech.sathethakun.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,14 +27,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.nexttech.sathethakun.MainActivity;
 import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -57,13 +48,14 @@ public class ProfileFragment extends Fragment {
     private CircleImageView profileImage;
     private CardView editProfilePicture;
     private TextInputEditText edtName, edtAge, edtEmail, edtPhoneNumber, edtAddress;
-    private LinearLayout requestProfile, connectedProfile, myProfile;
-    private Button btnDelete, btnAccept, btnRemove, btnEdit, btnUpdate;
+    private LinearLayout requestProfile;
+    private LinearLayout connectedProfile;
+    private Button btnEdit;
+    private Button btnUpdate;
 
     private String requestFor, myUID, requestKeys, requestId, connectedId;
 
     private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
 
     private Uri mImageUri;
     private StorageReference storageRef;
@@ -71,8 +63,6 @@ public class ProfileFragment extends Fragment {
     private String myImageUrl;
 
     private final int IMAGE_REQUEST = 33;
-
-    Context context;
 
 
     public ProfileFragment() {
@@ -109,132 +99,118 @@ public class ProfileFragment extends Fragment {
         edtAddress = view.findViewById(R.id.edt_address);
         requestProfile = view.findViewById(R.id.request_profile);
         connectedProfile = view.findViewById(R.id.connected_profile);
-        myProfile = view.findViewById(R.id.my_profile);
-        btnAccept = view.findViewById(R.id.btn_accept);
-        btnDelete = view.findViewById(R.id.btn_delete);
-        btnRemove = view.findViewById(R.id.btn_remove);
+        LinearLayout myProfile = view.findViewById(R.id.my_profile);
+        Button btnAccept = view.findViewById(R.id.btn_accept);
+        Button btnDelete = view.findViewById(R.id.btn_delete);
+        Button btnRemove = view.findViewById(R.id.btn_remove);
         btnEdit = view.findViewById(R.id.btn_edit);
         btnUpdate = view.findViewById(R.id.btn_update);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference("Uploads");
 
-        myUID = mAuth.getCurrentUser().getUid();
+        myUID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
         MainActivity.progressBarVisible();
 
-        if (requestFor.equals("request_profile")){
+        switch (requestFor) {
+            case "request_profile":
 
-            requestProfile.setVisibility(View.VISIBLE);
-            editProfilePicture.setVisibility(View.GONE);
+                requestProfile.setVisibility(View.VISIBLE);
+                editProfilePicture.setVisibility(View.GONE);
 
-            getRequestUserProfile(requestId);
-        } else if (requestFor.equals("connected_profile")) {
+                getRequestUserProfile(requestId);
+                break;
+            case "connected_profile":
 
-            connectedProfile.setVisibility(View.VISIBLE);
-            editProfilePicture.setVisibility(View.GONE);
+                connectedProfile.setVisibility(View.VISIBLE);
+                editProfilePicture.setVisibility(View.GONE);
 
-            getRequestUserProfile(connectedId);
-        } else if (requestFor.equals("my_profile")) {
+                getRequestUserProfile(connectedId);
+                break;
+            case "my_profile":
 
-            myProfile.setVisibility(View.VISIBLE);
-            editProfilePicture.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
+                myProfile.setVisibility(View.VISIBLE);
+                editProfilePicture.setVisibility(View.GONE);
+                btnUpdate.setVisibility(View.GONE);
 
-            getRequestUserProfile(myUID);
+                getRequestUserProfile(myUID);
+                break;
         }
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference reference = database.getReference("Connected");
+        btnAccept.setOnClickListener(view1 -> {
+            DatabaseReference reference = database.getReference("Connected");
 
-                reference.child(myUID).child(requestId).setValue(requestId);
-                reference.child(requestId).child(myUID).setValue(myUID);
+            reference.child(myUID).child(requestId).setValue(requestId);
+            reference.child(requestId).child(myUID).setValue(myUID);
 
-                DatabaseReference reference2 = database.getReference("User Requests").child(requestKeys);
+            DatabaseReference reference2 = database.getReference("User Requests").child(requestKeys);
 
-                reference2.removeValue();
+            reference2.removeValue();
 
-                requestProfile.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Request Accepted", Toast.LENGTH_SHORT).show();
-            }
+            requestProfile.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "Request Accepted", Toast.LENGTH_SHORT).show();
         });
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference reference = database.getReference("User Requests").child(requestKeys);
+        btnDelete.setOnClickListener(view12 -> {
+            DatabaseReference reference = database.getReference("User Requests").child(requestKeys);
 
-                reference.removeValue();
+            reference.removeValue();
 
-                requestProfile.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Request Deleted", Toast.LENGTH_SHORT).show();
-            }
+            requestProfile.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "Request Deleted", Toast.LENGTH_SHORT).show();
         });
 
-        btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference reference = database.getReference("Connected");
+        btnRemove.setOnClickListener(view13 -> {
+            DatabaseReference reference = database.getReference("Connected");
 
-                reference.child(myUID).child(connectedId).removeValue();
-                reference.child(connectedId).child(myUID).removeValue();
+            reference.child(myUID).child(connectedId).removeValue();
+            reference.child(connectedId).child(myUID).removeValue();
 
-                connectedProfile.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
-            }
+            connectedProfile.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
         });
 
-        editProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), IMAGE_REQUEST);
-            }
+        editProfilePicture.setOnClickListener(view14 -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), IMAGE_REQUEST);
         });
 
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editProfilePicture.setVisibility(View.VISIBLE);
+        btnEdit.setOnClickListener(view15 -> {
+            editProfilePicture.setVisibility(View.VISIBLE);
 
-                edtName.setEnabled(true);
-                edtAge.setEnabled(true);
-                edtEmail.setEnabled(true);
-                edtPhoneNumber.setEnabled(true);
-                edtAddress.setEnabled(true);
+            edtName.setEnabled(true);
+            edtAge.setEnabled(true);
+            edtEmail.setEnabled(true);
+            edtPhoneNumber.setEnabled(true);
+            edtAddress.setEnabled(true);
 
-                btnEdit.setVisibility(View.GONE);
-                btnUpdate.setVisibility(View.VISIBLE);
-            }
+            btnEdit.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.VISIBLE);
         });
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name, email, phone, age, address;
-                name = edtName.getText().toString();
-                email = edtEmail.getText().toString();
-                phone = edtPhoneNumber.getText().toString();
-                age = edtAge.getText().toString();
-                address = edtAddress.getText().toString();
+        btnUpdate.setOnClickListener(view16 -> {
+            String name, email, phone, age, address;
+            name = edtName.getText().toString();
+            email = edtEmail.getText().toString();
+            phone = edtPhoneNumber.getText().toString();
+            age = edtAge.getText().toString();
+            address = edtAddress.getText().toString();
 
-                if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || age.isEmpty() || address.isEmpty()){
-                    Toast.makeText(getContext(), "Input Data", Toast.LENGTH_SHORT).show();
-                } else if (phone.length() != 11){
-                    edtPhoneNumber.setError("Mobile number must have 11 digits");
-                    edtPhoneNumber.requestFocus();
-                } else if (!(phone.startsWith("017") || phone.startsWith("013") || phone.startsWith("014") || phone.startsWith("016") || phone.startsWith("018") || phone.startsWith("019") || phone.startsWith("015"))) {
-                    edtPhoneNumber.setError("Invalid mobile number");
-                    edtPhoneNumber.requestFocus();
-                } else {
-                    UserModel userModel = new UserModel(myUID, name, email, phone, age, address, myImageUrl);
-                    updateProfile(userModel);
-                }
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || age.isEmpty() || address.isEmpty()){
+                Toast.makeText(getContext(), "Input Data", Toast.LENGTH_SHORT).show();
+            } else if (phone.length() != 11){
+                edtPhoneNumber.setError("Mobile number must have 11 digits");
+                edtPhoneNumber.requestFocus();
+            } else if (!(phone.startsWith("017") || phone.startsWith("013") || phone.startsWith("014") || phone.startsWith("016") || phone.startsWith("018") || phone.startsWith("019") || phone.startsWith("015"))) {
+                edtPhoneNumber.setError("Invalid mobile number");
+                edtPhoneNumber.requestFocus();
+            } else {
+                UserModel userModel = new UserModel(myUID, name, email, phone, age, address, myImageUrl);
+                updateProfile(userModel);
             }
         });
 
@@ -245,26 +221,23 @@ public class ProfileFragment extends Fragment {
 
         DatabaseReference myRef = database.getReference("Users").child(myUID);
 
-        myRef.setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    DatabaseReference myRef2 = database.getReference("Search User").child(userModel.getPhone());
-                    myRef2.setValue(myUID);
+        myRef.setValue(userModel).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DatabaseReference myRef2 = database.getReference("Search User").child(userModel.getPhone());
+                myRef2.setValue(myUID);
 
-                    editProfilePicture.setVisibility(View.GONE);
+                editProfilePicture.setVisibility(View.GONE);
 
-                    edtName.setEnabled(false);
-                    edtAge.setEnabled(false);
-                    edtEmail.setEnabled(false);
-                    edtPhoneNumber.setEnabled(false);
-                    edtAddress.setEnabled(false);
+                edtName.setEnabled(false);
+                edtAge.setEnabled(false);
+                edtEmail.setEnabled(false);
+                edtPhoneNumber.setEnabled(false);
+                edtAddress.setEnabled(false);
 
-                    btnEdit.setVisibility(View.VISIBLE);
-                    btnUpdate.setVisibility(View.GONE);
-                }else {
-                    Toast.makeText(getContext(),"unsuccessful",Toast.LENGTH_SHORT).show();
-                }
+                btnEdit.setVisibility(View.VISIBLE);
+                btnUpdate.setVisibility(View.GONE);
+            }else {
+                Toast.makeText(getContext(),"unsuccessful",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -277,6 +250,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
+                assert userModel != null;
                 edtName.setText(userModel.getName());
                 edtAge.setText(userModel.getAge());
                 edtEmail.setText(userModel.getEmail());
@@ -287,7 +261,7 @@ public class ProfileFragment extends Fragment {
                     profileImage.setImageResource(R.mipmap.ic_launcher);
                     myImageUrl = "default";
                 } else {
-                    Glide.with(getContext()).load(userModel.getImageUri()).into(profileImage);
+                    Glide.with(Objects.requireNonNull(getContext())).load(userModel.getImageUri()).into(profileImage);
                     myImageUrl = userModel.getImageUri();
                 }
 
@@ -309,7 +283,7 @@ public class ProfileFragment extends Fragment {
 
             mImageUri = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), mImageUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getContext()).getContentResolver(), mImageUri);
                 profileImage.setImageBitmap(bitmap);
 
                 uploadImage();
@@ -331,34 +305,22 @@ public class ProfileFragment extends Fragment {
 
             StorageReference ref = storageRef.child("profile_pic/" + UUID.randomUUID().toString());
 
-            ref.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
+            ref.putFile(mImageUri).addOnSuccessListener(taskSnapshot -> {
+                progressDialog.dismiss();
 
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            myImageUrl= uri.toString();
+                ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                    myImageUrl= uri.toString();
 
-                            Glide.with(getContext()).load(myImageUrl).into(profileImage);
-                        }
-                    });
+                    Glide.with(Objects.requireNonNull(getContext())).load(myImageUrl).into(profileImage);
+                });
 
-                    Toast.makeText(getContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                }
+                Toast.makeText(getContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }).addOnProgressListener(taskSnapshot -> {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                progressDialog.setMessage("Uploaded " + (int)progress + "%");
             });
         }
     }

@@ -1,27 +1,19 @@
 package com.nexttech.sathethakun;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
-
-import com.mapbox.geojson.Point;
-
-import java.util.HashMap;
 
 public class CurrentLocation implements LocationListener {
 
@@ -76,44 +68,34 @@ public class CurrentLocation implements LocationListener {
         String message = String.format(
                 "New Location \n Longitude: %1$s \n Latitude: %2$s",
                 location.getLongitude(), location.getLatitude());
-        Log.e("location",message);
     }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-        Log.e("onStatusChanged", "==" + s);
         getLocation.onStatusChanged(s, i, bundle);
     }
 
     @Override
     public void onProviderEnabled(String s) {
-        Log.e("onProviderEnabled", "==" + s);
         getLocation.onProviderEnabled(s);
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Log.e("onProviderDisabled", "==" + s);
         getLocation.onProviderDisabled(s);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("Worning Message");
-        alertDialog.setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                context.startActivity(myIntent);
-                dialog.dismiss();
-            }
+        alertDialog.setTitle("Warning Message");
+        alertDialog.setPositiveButton("Allow", (dialog, which) -> {
+            // TODO Auto-generated method stub
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show();
+            Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            context.startActivity(myIntent);
+            dialog.dismiss();
         });
-        alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                Toast.makeText(context, "Permission Refused", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
+        alertDialog.setNegativeButton("cancel", (dialog, which) -> {
+            // TODO Auto-generated method stub
+            Toast.makeText(context, "Permission Refused", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
         AlertDialog dialog = alertDialog.create();
         dialog.setCanceledOnTouchOutside(false);

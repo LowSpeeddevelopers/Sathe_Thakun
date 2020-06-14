@@ -1,17 +1,15 @@
 package com.nexttech.sathethakun.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,11 +35,9 @@ public class RequestUsersFragment extends Fragment {
 
     private List<UserModel> userRequestList;
     private List<String> requestKey, requestUIDs;
-    private RecyclerView rvRequestUsers;
     private RequestAdapter mAdapter;
 
     private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
 
     String myUid;
 
@@ -55,9 +51,9 @@ public class RequestUsersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request_users, container, false);
 
-        rvRequestUsers = view.findViewById(R.id.rv_request_users);
+        RecyclerView rvRequestUsers = view.findViewById(R.id.rv_request_users);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         myUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -89,6 +85,7 @@ public class RequestUsersFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     RequestModel requestModel = snapshot.getValue(RequestModel.class);
 
+                    assert requestModel != null;
                     if (requestModel.getReceiver().equals(myUid)){
                         DatabaseReference myRef2 = database.getReference("Users").child(requestModel.getSender());
 

@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import com.nexttech.sathethakun.R;
 
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -36,13 +38,13 @@ public class PrivacyPolicyFragment extends Fragment {
             "Team Sathe Thakun will post any privacy policy changes on this page and, if the changes are significant, we will provide a more prominent notice.",
             "If you have any questions about this Privacy Policy, please contact us."
         };
-        ListView listView = (ListView) view.findViewById(R.id.privacy_policy);
-        ArrayAdapter<String> listViewAdaptar = new ArrayAdapter<String>(
-                getActivity(),
+        ListView listView = view.findViewById(R.id.privacy_policy);
+        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
+                Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_list_item_1,
                 menuitems
         );
-        listView.setAdapter(listViewAdaptar);
+        listView.setAdapter(listViewAdapter);
         return view;
     }
 }

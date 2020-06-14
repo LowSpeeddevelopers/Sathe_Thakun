@@ -2,11 +2,6 @@ package com.nexttech.sathethakun.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,7 +40,7 @@ import java.util.Objects;
 public class AddUsersFragment extends Fragment {
 
     private EditText edtUserSearch;
-    private ImageView btnSearch, ivProfilePic;
+    private ImageView ivProfilePic;
     private TextInputEditText edtName, edtAge, edtEmail, edtPhoneNumber, edtAddress;
     private Button btnSendRequest, btnCancelRequest;
 
@@ -66,7 +64,7 @@ public class AddUsersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_users, container, false);
 
         edtUserSearch = view.findViewById(R.id.edt_user_search);
-        btnSearch = view.findViewById(R.id.btn_search);
+        ImageView btnSearch = view.findViewById(R.id.btn_search);
         ivProfilePic = view.findViewById(R.id.iv_profile_pic);
         edtName = view.findViewById(R.id.edt_name);
         edtAge = view.findViewById(R.id.edt_age);
@@ -216,7 +214,7 @@ public class AddUsersFragment extends Fragment {
                 if (userModel.getImageUri().equals("default")){
                     ivProfilePic.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Glide.with(getContext()).load(userModel.getImageUri()).into(ivProfilePic);
+                    Glide.with(Objects.requireNonNull(getContext())).load(userModel.getImageUri()).into(ivProfilePic);
                 }
             }
 

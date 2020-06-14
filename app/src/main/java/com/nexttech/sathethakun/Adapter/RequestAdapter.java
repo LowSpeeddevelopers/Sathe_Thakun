@@ -1,8 +1,6 @@
 package com.nexttech.sathethakun.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +24,7 @@ import com.nexttech.sathethakun.Model.UserModel;
 import com.nexttech.sathethakun.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
 
@@ -46,7 +45,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        myUID = mAuth.getCurrentUser().getUid();
+        myUID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     }
 
     @NonNull
@@ -73,58 +72,38 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             Glide.with(context).load(model.getImageUri()).into(holder.itemProfilePic);
         }
 
-        holder.itemRequestAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference reference = database.getReference("Connected");
+        holder.itemRequestAccept.setOnClickListener(view -> {
+            DatabaseReference reference = database.getReference("Connected");
 
-                String id = requestUIDs.get(position);
+            String id = requestUIDs.get(position);
 
-                reference.child(myUID).child(id).setValue(id);
-                reference.child(id).child(myUID).setValue(myUID);
+            reference.child(myUID).child(id).setValue(id);
+            reference.child(id).child(myUID).setValue(myUID);
 
-                DatabaseReference reference2 = database.getReference("User Requests").child(requestKeys.get(position));
+            DatabaseReference reference2 = database.getReference("User Requests").child(requestKeys.get(position));
 
-                reference2.removeValue();
+            reference2.removeValue();
 
-                holder.itemBtn.setVisibility(View.GONE);
-                holder.itemMsg.setText("Request Accepted");
-                holder.itemMsg.setVisibility(View.VISIBLE);
-            }
+            holder.itemBtn.setVisibility(View.GONE);
+            holder.itemMsg.setText("Request Accepted");
+            holder.itemMsg.setVisibility(View.VISIBLE);
         });
 
-        holder.itemRequestDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference reference = database.getReference("User Requests").child(requestKeys.get(position));
+        holder.itemRequestDelete.setOnClickListener(view -> {
+            DatabaseReference reference = database.getReference("User Requests").child(requestKeys.get(position));
 
-                reference.removeValue();
+            reference.removeValue();
 
-                holder.itemBtn.setVisibility(View.GONE);
-                holder.itemMsg.setText("Request Deleted");
-                holder.itemMsg.setVisibility(View.VISIBLE);
-            }
+            holder.itemBtn.setVisibility(View.GONE);
+            holder.itemMsg.setText("Request Deleted");
+            holder.itemMsg.setVisibility(View.VISIBLE);
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent i = new Intent(context, ProfileActivity.class);
-//
-//                Bundle b = new Bundle();
-//
-//                b.putString("request_for", "request_profile");
-//                b.putString("user_id", model.getUserID());
-//                b.putString("request_id", requestKeys.get(position));
-//
-//                i.putExtras(b);
-//
-//                context.startActivity(i);
+        holder.itemView.setOnClickListener(view -> {
 
-                Fragment fragment = new ProfileFragment("request_profile", model.getUserID(), requestKeys.get(position));
+            Fragment fragment = new ProfileFragment("request_profile", model.getUserID(), requestKeys.get(position));
 
-                MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
-            }
+            MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
         });
     }
 
@@ -133,7 +112,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         return requestUsers.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView itemProfilePic;
         TextView itemUserName, itemUserMobileNumber, itemMsg;

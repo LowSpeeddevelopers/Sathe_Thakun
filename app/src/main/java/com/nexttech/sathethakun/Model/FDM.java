@@ -1,7 +1,5 @@
 package com.nexttech.sathethakun.Model;
 
-import com.nexttech.sathethakun.LoginandRegisterholder;
-
 public class FDM {
     private String Latitude;
     private String Longitude;

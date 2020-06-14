@@ -17,7 +17,10 @@ import android.widget.TextView;
 import com.nexttech.sathethakun.Model.ContactModel;
 import com.nexttech.sathethakun.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class ContactFragment extends Fragment {
@@ -30,7 +33,7 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         ArrayList<ContactModel> seniorDeveloper = new ArrayList<>();
@@ -131,7 +134,7 @@ public class ContactFragment extends Fragment {
     }
 
     private CardView addContact(String title, ArrayList<ContactModel> information){
-        CardView cardView = new CardView(getContext());
+        CardView cardView = new CardView(Objects.requireNonNull(getContext()));
 
         LinearLayout.LayoutParams cardViewParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         cardViewParam.setMargins(20,20,20,20);

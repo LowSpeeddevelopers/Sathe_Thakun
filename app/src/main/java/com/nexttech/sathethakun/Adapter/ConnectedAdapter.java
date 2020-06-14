@@ -65,24 +65,18 @@ public class ConnectedAdapter extends RecyclerView.Adapter<ConnectedAdapter.View
             Glide.with(context).load(model.getImageUri()).into(holder.itemProfilePic);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.itemView.setOnClickListener(view -> {
 
-                Fragment fragment = new ProfileFragment("connected_profile", model.getUserID());
+            Fragment fragment = new ProfileFragment("connected_profile", model.getUserID());
 
-                MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
+            MainActivity.openFragment(((FragmentActivity)context).getSupportFragmentManager().beginTransaction(), fragment, model.getName(), true);
 
-            }
         });
 
-        holder.btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(context, DirectionsActivity.class);
-                i.putExtra("userid",model.getUserID());
-                context.startActivity(i);
-            }
+        holder.btnLocation.setOnClickListener(view -> {
+            Intent i = new Intent(context, DirectionsActivity.class);
+            i.putExtra("userid",model.getUserID());
+            context.startActivity(i);
         });
 
     }

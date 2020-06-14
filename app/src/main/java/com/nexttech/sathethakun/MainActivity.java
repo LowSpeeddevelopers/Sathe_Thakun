@@ -3,7 +3,6 @@ package com.nexttech.sathethakun;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 ((Activity)context).finish();
             }
         }else {
-            Intent i = new Intent(context,LoginandRegisterholder.class);
+            Intent i = new Intent(context, LoginAndRegisterHolder.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
             ((Activity)context).finish();
@@ -218,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         });
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
-            startActivity(new Intent(MainActivity.this, LoginandRegisterholder.class));
+            startActivity(new Intent(MainActivity.this, LoginAndRegisterHolder.class));
             finish();
             stopService();
         });
@@ -443,6 +442,7 @@ public class MainActivity extends AppCompatActivity {
         if (wifiNetwork != null && wifiNetwork.isConnected()) {
             return true;
         }
+        assert cm != null;
         NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (mobileNetwork != null && mobileNetwork.isConnected()) {
             return true;
